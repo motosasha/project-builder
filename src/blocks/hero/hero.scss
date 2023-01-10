@@ -1,0 +1,68 @@
+@import "../../scss/mixins/fluid";
+@import "../../scss/mixins/text-styles";
+
+.hero {
+  $block-name: &; // #{$block-name}__element
+
+  &__inner {
+    display: grid;
+    gap: fluid(8, 16, 320, 768);
+    padding: fluid(24, 56, 320, 768) 0;
+
+    @media screen and (min-width: $screen-ti) {
+      gap: fluid(16, 24, 768, 1280);
+      padding: 56px 0;
+    }
+
+    @media screen and (min-width: $screen-d) {
+      gap: 24px;
+    }
+  }
+
+  &__title {
+    @include header;
+
+    margin: 0;
+  }
+
+  &__descr {
+    @include body;
+
+    margin: 0;
+    color: var(--front-primary);
+  }
+
+  &__tiles {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    width: 100%;
+    max-width: 600px;
+  }
+
+  &__tile {
+    display: grid;
+    gap: 24px;
+    padding: 16px;
+    background-color: var(--back-secondary);
+
+    &--bg {
+      background-image: url("../img/svgSprite.svg#icon__default-view");
+      background-repeat: no-repeat;
+      background-position: center bottom 16px;
+      background-size: 64px 64px;
+    }
+  }
+
+  &__tile-descr {
+    @include body;
+
+    text-align: center;
+  }
+
+  &__icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto;
+  }
+}

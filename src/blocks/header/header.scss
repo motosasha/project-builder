@@ -1,0 +1,44 @@
+@import "../../scss/mixins/fluid";
+
+.header {
+  $block-name: &; // #{$block-name}__element
+
+  background: var(--back-primary);
+  border-bottom: 1px solid var(--border-primary);
+
+  &__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+    padding: 16px 0;
+
+    @media screen and (min-width: $screen-t) {
+      flex-direction: row;
+    }
+  }
+
+  &__logo {
+    @media screen and (min-width: $screen-t) {
+      margin-right: auto;
+    }
+  }
+
+  &__nav {
+    display: flex;
+    gap: 8px;
+
+    @media screen and (min-width: $screen-t) {
+      gap: fluid(16, 48, 576, 1920);
+    }
+  }
+
+  &__nav-item {
+    color: var(--link-color);
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
