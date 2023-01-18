@@ -290,6 +290,44 @@ function writeJsRequiresFile(cb) {
 exports.writeJsRequiresFile = writeJsRequiresFile;
 
 
+function compileJs() {
+  const entryList = {
+    'bundle': `./${dir.src}js/entry.js`,
+  };
+  return src(`${dir.src}js/entry.js`)
+    .pipe(plumber())
+    .pipe(webpackStream({
+      mode: mode,
+      entry: entryList,
+      devtool: mode === 'development' ? 'inline-source-map' : false,
+      output: {
+        filename: '[name].js',
+      },
+      resolve: {
+        alias: {
+          Utils: path.resolve(__dirname, 'src/js/utils/'),
+        },
+      },
+      module: {
+        rules: [
+          {
+            test: /\.(js)$/,
+            exclude: /(node_modules)/,
+            loader: 'babel-loader',
+            options: {
+              presets: ['@babel/preset-env']
+            }
+          }
+        ]
+      },
+      // externals: {
+      //   jquery: 'jQuery'
+      // }
+    }))
+    .pipe(dest(`${dir.build}js`));
+}
+exports.compileJs = compileJs;
+
 function buildJs() {
   const entryList = {
     'bundle': `./${dir.src}js/entry.js`,
@@ -314,7 +352,7 @@ function buildJs() {
             test: /\.(js)$/,
             exclude: /(node_modules)/,
             loader: 'babel-loader',
-            query: {
+            options: {
               presets: ['@babel/preset-env']
             }
           }
@@ -331,7 +369,7 @@ function buildJs() {
     }))
     .pipe(dest(`${dir.build}js`));
 }
-exports.buildJs = buildJs;
+exports.buildJs = buildJs
 
 
 function buildJson(cb) {
@@ -409,7 +447,7 @@ function serve() {
   watch([`${dir.src}pages/**/*.pug`], { events: ['change', 'add'], delay: 100 }, series(
     compilePugFast,
     //parallel(writeSassImportsFile, writeJsRequiresFile),
-    //parallel(compileSass, buildJs),
+    //parallel(compileSass, compileJs),
     reload
   ));
 
@@ -443,7 +481,7 @@ function serve() {
   watch([`${dir.src}pug/**/*.pug`, `!${dir.src}pug/mixins.pug`], { delay: 100 }, series(
     compilePug,
     parallel(writeSassImportsFile, writeJsRequiresFile),
-    parallel(compileSass, buildJs),
+    parallel(compileSass, compileJs),
     reload,
   ));
 
@@ -466,7 +504,7 @@ function serve() {
   // Скриптовые глобальные файлы: все события
   watch([`${dir.src}js/**/*.js`, `!${dir.src}js/entry.js`, `${dir.blocks}**/*.js`], { events: ['all'], delay: 100 }, series(
     writeJsRequiresFile,
-    buildJs,
+    compileJs,
     reload
   ));
 
@@ -537,7 +575,7 @@ exports.default = series(
   parallel(buildJson),
   parallel(compilePugFast, copyAssets, generateSvgSprite),
   parallel(copyAdditions, copyFonts, copyBlockImg, writeSassImportsFile, writeJsRequiresFile),
-  parallel(compileSass, buildJs),
+  parallel(compileSass, compileJs),
   serve,
 );
 
