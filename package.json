@@ -83,7 +83,7 @@
     "stylelint-scss": "^4.3.0",
     "through2": "^4.0.2",
     "webpack": "^5.21.1",
-    "webpack-stream": "^6.1.2"
+    "webpack-stream": "^7.0.0"
   },
   "dependencies": {
     "sanitize.css": "^13.0.0"
