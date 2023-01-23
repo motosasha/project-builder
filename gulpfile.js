@@ -4,10 +4,10 @@
 
 // Пакеты, использующиеся при обработке
 const { series, parallel, src, dest, watch, lastRun } = require('gulp');
-const atImport = require("postcss-import");
-const autoprefixer = require("autoprefixer");
+const atImport = require('postcss-import');
+const autoprefixer = require('autoprefixer');
 const browserSync = require('browser-sync').create();
-const cheerio = require("gulp-cheerio");
+const cheerio = require('gulp-cheerio');
 const cpy = require('cpy');
 const csso = require('gulp-csso');
 const debug = require('gulp-debug');
@@ -15,13 +15,14 @@ const del = require('del');
 const fs = require('fs');
 const getClassesFromHtml = require('get-classes-from-html');
 const ghPages = require('gh-pages');
-const jsonConcat = require("gulp-json-concat");
-const mqPacker = require("css-mqpacker");
-const path = require("path");
+const jsonConcat = require('gulp-json-concat');
+const mqPacker = require('css-mqpacker');
+const path = require('path');
 const plumber = require('gulp-plumber');
 const postcss = require('gulp-postcss');
 const prettyHtml = require('gulp-pretty-html');
 const pug = require('gulp-pug');
+const pxToRem = require('postcss-pxtorem');
 const rename = require('gulp-rename');
 const sass = require('gulp-sass')(require('sass'));
 const svgMin = require('gulp-svgmin');
@@ -52,6 +53,15 @@ let prettyOption = {
 // Список и настройки плагинов postCSS
 let postCssPlugins = [
   autoprefixer({grid: true}),
+  pxToRem({
+    rootValue: 16,
+    unitPrecision: 5,
+    propList: ['font', 'font-size', 'line-height', 'letter-spacing'],
+    selectorBlackList: [],
+    replace: true,
+    mediaQuery: false,
+    minPixelValue: 0,
+  }),
   mqPacker({
     sort: true
   }),
@@ -84,8 +94,8 @@ function compilePug() {
     }))
     .pipe(debug({title: 'Compiles '}))
     .pipe(pug({
-      data: { repoUrl: "https://gitlab.thecoders.ru/a.motorygin/project-builder" },
-      locals: JSON.parse(fs.readFileSync("./src/json/data.json", "utf8"))
+      data: { repoUrl: 'https://gitlab.thecoders.ru/a.motorygin/project-builder' },
+      locals: JSON.parse(fs.readFileSync('./src/json/data.json', 'utf8'))
     }))
     .pipe(prettyHtml(prettyOption))
     .pipe(through2.obj(getClassesToBlocksList, '', ''))
@@ -107,8 +117,8 @@ function compilePugFast() {
     }))
     .pipe(debug({title: 'Compiles '}))
     .pipe(pug({
-      data: { repoUrl: "https://gitlab.thecoders.ru/a.motorygin/project-builder" },
-      locals: JSON.parse(fs.readFileSync("./src/json/data.json", "utf8"))
+      data: { repoUrl: 'https://gitlab.thecoders.ru/a.motorygin/project-builder' },
+      locals: JSON.parse(fs.readFileSync('./src/json/data.json', 'utf8'))
     }))
     .pipe(prettyHtml(prettyOption))
     .pipe(through2.obj(getClassesToBlocksList, '', ''))
@@ -155,9 +165,20 @@ exports.copyBlockImg = copyBlockImg;
 
 
 function generateSvgSprite(cb) {
-  let spriteSvgPath = `${dir.src}symbols/`;
-  if (fileExist(spriteSvgPath)) {
-    return src(spriteSvgPath + "*.svg")
+  let spriteSvgSymbols = [];
+  let spriteSvgPath = `${dir.src}symbols`;
+  nth.blocksFromHtml.forEach(function(block) {
+    let src = `${dir.blocks}${block}/symbols`;
+    if(fileExist(src)) spriteSvgSymbols.push(`${src}/*.svg`);
+  });
+  nth.config.alwaysAddBlocks.forEach(function(block) {
+    let src = `${dir.blocks}${block}/symbols`;
+    if(fileExist(src)) spriteSvgSymbols.push(`${src}/*.svg`);
+  });
+  if(fileExist(spriteSvgPath)) spriteSvgSymbols.push(`${spriteSvgPath}/*.svg`);
+  console.log(spriteSvgSymbols);
+  if(spriteSvgSymbols.length) {
+    return src(spriteSvgSymbols)
       .pipe(plumber({
         errorHandler: function (err) {
           console.log(err.message);
@@ -171,9 +192,9 @@ function generateSvgSprite(cb) {
               cleanupIDs: { minify: true }
             },
             {
-              name: "removeAttrs",
+              name: 'removeAttrs',
               params: {
-                attrs: "(height|width)"
+                attrs: '(height|width)'
               }
             },
             {
@@ -185,14 +206,15 @@ function generateSvgSprite(cb) {
       .pipe(svgStore({ inlineSvg: true }))
       .pipe(cheerio({
         run: function ($) {
-          let addition = fs.readFileSync(dir.svgAsBg, "utf8");
+          let addition = fs.readFileSync(dir.svgAsBg, 'utf8');
           $('svg').append(addition);
         },
         parserOptions: { xmlMode: true }
       }))
-      .pipe(rename("svgSprite.svg"))
+      .pipe(rename('svgSprite.svg'))
       .pipe(dest(`${dir.build}img/`));
-  } else {
+  }
+  else {
     cb();
   }
 }
@@ -222,7 +244,7 @@ function writeSassImportsFile(cb) {
     let msg = `\n/*!*${doNotEditMsg.replace(/\n /gm,'\n * ').replace(/\n\n$/,'\n */\n\n')}`;
     let styleImports = msg;
     newScssImportsList.forEach(function(src) {
-      styleImports += `@import "${src}";\n`;
+      styleImports += `@import '${src}';\n`;
     });
     styleImports += msg;
     fs.writeFileSync(`${dir.src}scss/style.scss`, styleImports);
@@ -246,7 +268,7 @@ function compileSass() {
       }
     }))
     .pipe(debug({title: 'Compiles:'}))
-    .pipe(sass({includePaths: [__dirname+'/','node_modules']}))
+    .pipe(sass({includePaths: [__dirname+'/','node_modules']}, ''))
     .pipe(postcss(postCssPlugins))
     .pipe(csso({
       restructure: false,
@@ -426,7 +448,7 @@ function reload(done) {
 }
 
 function deploy(cb) {
-  ghPages.publish(path.join(process.cwd(), dir.build), "", cb).then();
+  ghPages.publish(path.join(process.cwd(), dir.build), '', cb).then();
 }
 exports.deploy = deploy;
 
@@ -436,7 +458,7 @@ function serve() {
   browserSync.init({
     server: dir.build,
     host: '192.168.1.39',
-    logPrefix: "dev-server",
+    logPrefix: 'dev-server',
     port: 3000,
     startPath: 'index.html',
     open: false,
@@ -509,13 +531,13 @@ function serve() {
   ));
 
   // Картинки: копирование из общей папки
-  watch([`${dir.src}/img/**/*.{jpg,jpeg,png,gif,svg,webp}`, `${dir.src}/favicon/**/*.*"`], { events: ['all'], delay: 100 }, series(
+  watch([`${dir.src}/img/**/*.{jpg,jpeg,png,gif,svg,webp}`, `${dir.src}/favicon/**/*.*`], { events: ['all'], delay: 100 }, series(
     copyAdditions,
     reload
   ));
 
   // Картинки: копирование из блоков
-  watch([`${dir.blocks}**/img/**/*.{jpg,jpeg,png,gif,svg,webp}`], { events: ["all"], delay: 100 }, series(
+  watch([`${dir.blocks}**/img/**/*.{jpg,jpeg,png,gif,svg,webp}`], { events: ['all'], delay: 100 }, series(
     copyBlockImg,
     reload
   ));
@@ -564,8 +586,9 @@ function serve() {
 exports.build = series(
   parallel(clearBuildDir, writePugMixinsFile),
   parallel(buildJson),
-  parallel(compilePugFast, copyAssets, generateSvgSprite),
-  parallel(copyAdditions, copyFonts, copyBlockImg, writeSassImportsFile, writeJsRequiresFile),
+  parallel(compilePugFast, copyAssets,),
+  parallel(copyAdditions, copyFonts, copyBlockImg, generateSvgSprite),
+  parallel(writeSassImportsFile, writeJsRequiresFile),
   parallel(compileSass, buildJs),
 );
 
@@ -573,8 +596,9 @@ exports.build = series(
 exports.default = series(
   parallel(clearBuildDir, writePugMixinsFile),
   parallel(buildJson),
-  parallel(compilePugFast, copyAssets, generateSvgSprite),
-  parallel(copyAdditions, copyFonts, copyBlockImg, writeSassImportsFile, writeJsRequiresFile),
+  parallel(compilePugFast, copyAssets),
+  parallel(copyAdditions, copyFonts, copyBlockImg, generateSvgSprite),
+  parallel(writeSassImportsFile, writeJsRequiresFile),
   parallel(compileSass, compileJs),
   serve,
 );
@@ -586,7 +610,7 @@ exports.default = series(
 // Функции, не являющиеся задачами Gulp ----------------------------------------
 
 /**
- * Получение списка классов из HTML и запись его в глоб. переменную nth.blocksFromHtml.
+ * Получение списка классов из HTML и запись его в глобальную переменную nth.blocksFromHtml.
  * @param  {object}   file Обрабатываемый файл
  * @param  {string}   enc  Кодировка
  * @param  {Function} cb   Коллбэк
