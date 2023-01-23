@@ -55,7 +55,17 @@ if (blockName) {
       }
     }
 
-    if (fileExist(filePath) === false && extension !== 'img' && extension !== 'md') {
+    else if (extension === 'symbols') {
+      const symbolsFolder = `${dirPath}symbols/`;
+      if (fileExist(symbolsFolder) === false) {
+        const made = mkdirp.sync(symbolsFolder);
+        console.log(`[MSG] Создание папки: ${made}`);
+      } else {
+        console.log(`[MSG] Папка ${symbolsFolder} НЕ создана (уже существует) `);
+      }
+    }
+
+    if (fileExist(filePath) === false && extension !== 'img' && extension !== 'md' && extension !== 'symbols') {
       fs.writeFile(filePath, fileContent, (err) => {
         if (err) {
           return console.log(`[MSG] Файл НЕ создан: ${err}`);
