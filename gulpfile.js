@@ -549,7 +549,7 @@ function serve() {
   ));
 
   // Спрайт SVG
-  watch([`${dir.src}symbols/*.svg`], { events: ['all'], delay: 100 }, series(
+  watch([`${dir.src}symbols/*.svg`, `${dir.blocks}**/symbols/**/*.svg`], { events: ['all'], delay: 100 }, series(
     generateSvgSprite,
     reload,
   ));
