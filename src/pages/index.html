@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="ru-RU" class="no-js">
+  @@include('./templates/head.html', { "title": "Page title", "description": "Description",
+  "keywords": "Keywords" })
+
+  <body>
+    <noscript>У вас отключен JavaScript. Это пугает.</noscript>
+    <div class="page">
+      <div class="page__header">@@include('./blocks/header/header.html')</div>
+      <div class="page__main">@@include('./blocks/hero/hero.html')</div>
+      <div class="page__footer">@@include('./blocks/footer/footer.html')</div>
+    </div>
+
+    <script src="js/bundle.js"></script>
+  </body>
+</html>

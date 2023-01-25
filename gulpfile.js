@@ -3,7 +3,7 @@
 'use strict';
 
 // Пакеты, использующиеся при обработке
-const { series, parallel, src, dest, watch, lastRun } = require('gulp');
+const { series, parallel, src, dest, watch } = require('gulp');
 const atImport = require('postcss-import');
 const autoprefixer = require('autoprefixer');
 const browserSync = require('browser-sync').create();
@@ -12,23 +12,23 @@ const cpy = require('cpy');
 const csso = require('gulp-csso');
 const debug = require('gulp-debug');
 const del = require('del');
+const fileInclude = require('gulp-file-include');
 const fs = require('fs');
 const getClassesFromHtml = require('get-classes-from-html');
 const ghPages = require('gh-pages');
-const jsonConcat = require('gulp-json-concat');
 const mqPacker = require('css-mqpacker');
 const path = require('path');
 const plumber = require('gulp-plumber');
 const postcss = require('gulp-postcss');
 const prettyHtml = require('gulp-pretty-html');
-const pug = require('gulp-pug');
 const pxToRem = require('postcss-pxtorem');
 const rename = require('gulp-rename');
+const rigger = require('gulp-rigger');
 const sass = require('gulp-sass')(require('sass'));
 const svgMin = require('gulp-svgmin');
 const svgStore = require('gulp-svgstore');
-const through2 = require('through2');
 const uglify = require('gulp-uglify-es').default;
+const through2 = require('through2');
 const webpackStream = require('webpack-stream');
 
 // Глобальные настройки этого запуска
@@ -69,62 +69,32 @@ let postCssPlugins = [
 ];
 
 
-function writePugMixinsFile(cb) {
-  let allBlocksWithPugFiles = getDirectories('pug');
-  let pugMixins = '//-' + doNotEditMsg.replace(/\n /gm,'\n  ');
-  allBlocksWithPugFiles.forEach(function(blockName) {
-    pugMixins += `include ${dir.blocks.replace(dir.src,'../')}${blockName}/${blockName}.pug\n`;
-  });
-  fs.writeFileSync(`${dir.src}pug/mixins.pug`, pugMixins);
-  cb();
-}
-exports.writePugMixinsFile = writePugMixinsFile;
-
-
-function compilePug() {
+function htmlBuild(cb) {
   const fileList = [
-    `${dir.src}pages/**/*.pug`
+    `${dir.src}pages/**/*.html`
   ];
-  return src(fileList)
-    .pipe(plumber({
-      errorHandler: function (err) {
-        console.log(err.message);
-        this.emit('end');
-      }
-    }))
-    .pipe(debug({title: 'Compiles '}))
-    .pipe(pug({
-      data: { repoUrl: 'https://gitlab.thecoders.ru/a.motorygin/project-builder' },
-      locals: JSON.parse(fs.readFileSync('./src/json/data.json', 'utf8'))
-    }))
-    .pipe(prettyHtml(prettyOption))
-    .pipe(through2.obj(getClassesToBlocksList, '', ''))
-    .pipe(dest(dir.build));
+  if (fileList) {
+    return src(fileList)
+      .pipe(plumber({
+        errorHandler: function (err) {
+          console.log(err.message);
+          this.emit('end');
+        }
+      }))
+      .pipe(debug({title: 'Compiles '}))
+      .pipe(rigger())
+      .pipe(fileInclude({
+        prefix: '@@',
+        basepath: './src'
+      }))
+      .pipe(prettyHtml(prettyOption))
+      .pipe(through2.obj(getClassesToBlocksList, '', ''))
+      .pipe(dest(dir.build));
+  } else {
+    cb()
+  }
 }
-exports.compilePug = compilePug;
-
-
-function compilePugFast() {
-  const fileList = [
-    `${dir.src}pages/**/*.pug`
-  ];
-  return src(fileList, { since: lastRun(compilePugFast) })
-    .pipe(plumber({
-      errorHandler: function (err) {
-        console.log(err.message);
-        this.emit('end');
-      }
-    }))
-    .pipe(debug({title: 'Compiles '}))
-    .pipe(pug({
-      data: { repoUrl: 'https://gitlab.thecoders.ru/a.motorygin/project-builder' },
-      locals: JSON.parse(fs.readFileSync('./src/json/data.json', 'utf8'))
-    }))
-    .pipe(prettyHtml(prettyOption))
-    .pipe(through2.obj(getClassesToBlocksList, '', ''))
-    .pipe(dest(dir.build));
-}
-exports.compilePugFast = compilePugFast;
+exports.htmlBuild = htmlBuild;
 
 
 function copyAssets(cb) {
@@ -394,22 +364,6 @@ function buildJs() {
 exports.buildJs = buildJs
 
 
-function buildJson(cb) {
-  const jsonList = `${dir.data}**/*.json`;
-  if (jsonList) {
-    return src(jsonList)
-      .pipe(plumber())
-      .pipe(jsonConcat('data.json',function(data){
-        return new Buffer.from(JSON.stringify(data));
-      }))
-      .pipe(dest(`${dir.src}json`));
-  } else {
-    cb();
-  }
-}
-exports.buildJson = buildJson;
-
-
 function copyAdditions(cb) {
   for (let item in nth.config.addAdditions) {
     let dest = `${dir.build}${nth.config.addAdditions[item]}`;
@@ -466,17 +420,17 @@ function serve() {
   });
 
   // Страницы: изменение, добавление
-  watch([`${dir.src}pages/**/*.pug`], { events: ['change', 'add'], delay: 100 }, series(
-    compilePugFast,
+  watch([`${dir.src}pages/**/*.html`], { events: ['change', 'add'], delay: 100 }, series(
+    htmlBuild,
     //parallel(writeSassImportsFile, writeJsRequiresFile),
     //parallel(compileSass, compileJs),
     reload
   ));
 
   // Страницы: удаление
-  watch([`${dir.src}pages/**/*.pug`], { delay: 100 })
+  watch([`${dir.src}pages/**/*.html`], { delay: 100 })
     .on('unlink', function(path) {
-      let filePathInBuildDir = path.replace(`${dir.src}pages/`, dir.build).replace('.pug', '.html');
+      let filePathInBuildDir = path.replace(`${dir.src}pages/`, dir.build).replace('.html', '.html');
       fs.unlink(filePathInBuildDir, (err) => {
         if (err) throw err;
         console.log(`---------- Delete:  ${filePathInBuildDir}`);
@@ -484,24 +438,20 @@ function serve() {
     });
 
   // Разметка Блоков: изменение
-  watch([`${dir.blocks}**/*.pug`], { events: ['change'], delay: 100 }, series(
-    compilePug,
+  watch([`${dir.blocks}**/*.html`], { events: ['change'], delay: 100 }, series(
+    htmlBuild,
     reload
   ));
 
   // Разметка Блоков: добавление
-  watch([`${dir.blocks}**/*.pug`], { events: ['add'], delay: 100 }, series(
-    writePugMixinsFile,
-    compilePug,
+  watch([`${dir.blocks}**/*.html`], { events: ['add'], delay: 100 }, series(
+    htmlBuild,
     reload
   ));
 
-  // Разметка Блоков: удаление
-  watch([`${dir.blocks}**/*.pug`], { events: ['unlink'], delay: 100 }, writePugMixinsFile);
-
   // Шаблоны pug: все события
-  watch([`${dir.src}pug/**/*.pug`, `!${dir.src}pug/mixins.pug`], { delay: 100 }, series(
-    compilePug,
+  watch([`${dir.src}templates/**/*.html`], { delay: 100 }, series(
+    htmlBuild,
     parallel(writeSassImportsFile, writeJsRequiresFile),
     parallel(compileSass, compileJs),
     reload,
@@ -559,34 +509,12 @@ function serve() {
     copyFonts,
     reload,
   ));
-
-  // Сборка json: изменение
-  watch([`${dir.data}**/*.json`], { events: ['change'], delay: 100 }, series(
-    buildJson,
-    compilePug,
-    reload
-  ));
-
-  // Сборка json: добавление
-  watch([`${dir.data}**/*.json`], { events: ['add'], delay: 100 }, series(
-    buildJson,
-    compilePug,
-    reload
-  ));
-
-  // Сборка json: все события
-  watch([`${dir.data}**/*.json`], { events: ['all'], delay: 100 }, series(
-    buildJson,
-    compilePug,
-    reload
-  ));
 }
 
 
 exports.build = series(
-  parallel(clearBuildDir, writePugMixinsFile),
-  parallel(buildJson),
-  parallel(compilePugFast, copyAssets,),
+  parallel(clearBuildDir),
+  parallel(copyAssets, htmlBuild),
   parallel(copyAdditions, copyFonts, copyBlockImg, generateSvgSprite),
   parallel(writeSassImportsFile, writeJsRequiresFile),
   parallel(compileSass, buildJs),
@@ -594,9 +522,8 @@ exports.build = series(
 
 
 exports.default = series(
-  parallel(clearBuildDir, writePugMixinsFile),
-  parallel(buildJson),
-  parallel(compilePugFast, copyAssets),
+  parallel(clearBuildDir),
+  parallel(copyAssets, htmlBuild),
   parallel(copyAdditions, copyFonts, copyBlockImg, generateSvgSprite),
   parallel(writeSassImportsFile, writeJsRequiresFile),
   parallel(compileSass, compileJs),
