@@ -4,7 +4,7 @@ temp/
 build/*
 !build/readme.md
 
-src/pug/mixins.pug
+src/templates/mixins.pug
 src/js/entry.js
 src/scss/style.scss
 

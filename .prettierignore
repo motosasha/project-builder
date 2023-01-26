@@ -3,7 +3,7 @@ build/*
 !build/readme.md
 
 src/favicon/
-src/pug/mixins.pug
+src/templates/mixins.pug
 src/js/head-script.js
 src/js/entry.js
 src/scss/style.scss

@@ -75,7 +75,7 @@ function writePugMixinsFile(cb) {
   allBlocksWithPugFiles.forEach(function(blockName) {
     pugMixins += `include ${dir.blocks.replace(dir.src,'../')}${blockName}/${blockName}.pug\n`;
   });
-  fs.writeFileSync(`${dir.src}pug/mixins.pug`, pugMixins);
+  fs.writeFileSync(`${dir.src}templates/mixins.pug`, pugMixins);
   cb();
 }
 exports.writePugMixinsFile = writePugMixinsFile;
@@ -500,7 +500,7 @@ function serve() {
   watch([`${dir.blocks}**/*.pug`], { events: ['unlink'], delay: 100 }, writePugMixinsFile);
 
   // Шаблоны pug: все события
-  watch([`${dir.src}pug/**/*.pug`, `!${dir.src}pug/mixins.pug`], { delay: 100 }, series(
+  watch([`${dir.src}templates/**/*.pug`, `!${dir.src}templates/mixins.pug`], { delay: 100 }, series(
     compilePug,
     parallel(writeSassImportsFile, writeJsRequiresFile),
     parallel(compileSass, compileJs),
