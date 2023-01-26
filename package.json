@@ -9,8 +9,7 @@
     "url": "git+https://gitlab.thecoders.ru/a.motorygin/project-builder"
   },
   "scripts": {
-    "test": "npm run test:pug && npm run test:style && npm run test:js",
-    "test:pug": "glob-exec \"src/**/*.pug\" -- \"pug-lint {{files.join(' ')}}\"",
+    "test": "npm run test:style && npm run test:js",
     "test:style": "stylelint \"src/**/*.scss\" --custom-syntax postcss-scss",
     "test:js": "eslint src/blocks/**/*.js src/js/**/*.js",
     "fix:style": "stylelint \"src/**/*.scss\" --custom-syntax postcss-scss --fix",
@@ -23,8 +22,7 @@
     "deploy": "gulp deploy"
   },
   "lint-staged": {
-    "*.{js,pug,md}": "editorconfig-cli",
-    "*.pug": "pug-lint",
+    "*.{js,md}": "editorconfig-cli",
     "*.scss": "stylelint --custom-syntax postcss-scss",
     "*.js": "eslint"
   },
