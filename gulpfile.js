@@ -3,7 +3,7 @@
 'use strict';
 
 // Пакеты, использующиеся при обработке
-const { series, parallel, src, dest, watch, lastRun } = require('gulp');
+const { series, parallel, src, dest, watch } = require('gulp');
 const atImport = require('postcss-import');
 const autoprefixer = require('autoprefixer');
 const browserSync = require('browser-sync').create();
@@ -15,13 +15,13 @@ const del = require('del');
 const fs = require('fs');
 const getClassesFromHtml = require('get-classes-from-html');
 const ghPages = require('gh-pages');
+const handlebars = require('gulp-hb');
 const jsonConcat = require('gulp-json-concat');
 const mqPacker = require('css-mqpacker');
 const path = require('path');
 const plumber = require('gulp-plumber');
 const postcss = require('gulp-postcss');
 const prettyHtml = require('gulp-pretty-html');
-const pug = require('gulp-pug');
 const pxToRem = require('postcss-pxtorem');
 const rename = require('gulp-rename');
 const sass = require('gulp-sass')(require('sass'));
@@ -68,22 +68,9 @@ let postCssPlugins = [
   atImport()
 ];
 
-
-function writePugMixinsFile(cb) {
-  let allBlocksWithPugFiles = getDirectories('pug');
-  let pugMixins = '//-' + doNotEditMsg.replace(/\n /gm,'\n  ');
-  allBlocksWithPugFiles.forEach(function(blockName) {
-    pugMixins += `include ${dir.blocks.replace(dir.src,'../')}${blockName}/${blockName}.pug\n`;
-  });
-  fs.writeFileSync(`${dir.src}pug/mixins.pug`, pugMixins);
-  cb();
-}
-exports.writePugMixinsFile = writePugMixinsFile;
-
-
-function compilePug() {
+function compileHbs() {
   const fileList = [
-    `${dir.src}pages/**/*.pug`
+    `${dir.src}pages/**/*.hbs`
   ];
   return src(fileList)
     .pipe(plumber({
@@ -93,38 +80,18 @@ function compilePug() {
       }
     }))
     .pipe(debug({title: 'Compiles '}))
-    .pipe(pug({
-      data: { repoUrl: 'https://gitlab.thecoders.ru/a.motorygin/project-builder' },
-      locals: JSON.parse(fs.readFileSync('./src/json/data.json', 'utf8'))
-    }))
+    .pipe(handlebars()
+      .partials('./src/blocks/**/*.hbs')
+      .partials('./src/templates/**/*.hbs')
+      .helpers(require('handlebars-layouts'))
+      .data('./src/json/data.json')
+    )
+    .pipe(rename(function(path) {path.extname = '.html';}))
     .pipe(prettyHtml(prettyOption))
     .pipe(through2.obj(getClassesToBlocksList, '', ''))
     .pipe(dest(dir.build));
 }
-exports.compilePug = compilePug;
-
-
-function compilePugFast() {
-  const fileList = [
-    `${dir.src}pages/**/*.pug`
-  ];
-  return src(fileList, { since: lastRun(compilePugFast) })
-    .pipe(plumber({
-      errorHandler: function (err) {
-        console.log(err.message);
-        this.emit('end');
-      }
-    }))
-    .pipe(debug({title: 'Compiles '}))
-    .pipe(pug({
-      data: { repoUrl: 'https://gitlab.thecoders.ru/a.motorygin/project-builder' },
-      locals: JSON.parse(fs.readFileSync('./src/json/data.json', 'utf8'))
-    }))
-    .pipe(prettyHtml(prettyOption))
-    .pipe(through2.obj(getClassesToBlocksList, '', ''))
-    .pipe(dest(dir.build));
-}
-exports.compilePugFast = compilePugFast;
+exports.compileHbs = compileHbs;
 
 
 function copyAssets(cb) {
@@ -466,17 +433,17 @@ function serve() {
   });
 
   // Страницы: изменение, добавление
-  watch([`${dir.src}pages/**/*.pug`], { events: ['change', 'add'], delay: 100 }, series(
-    compilePugFast,
+  watch([`${dir.src}pages/**/*.hbs`], { events: ['change', 'add'], delay: 100 }, series(
+    compileHbs,
     //parallel(writeSassImportsFile, writeJsRequiresFile),
     //parallel(compileSass, compileJs),
     reload
   ));
 
   // Страницы: удаление
-  watch([`${dir.src}pages/**/*.pug`], { delay: 100 })
+  watch([`${dir.src}pages/**/*.hbs`], { delay: 100 })
     .on('unlink', function(path) {
-      let filePathInBuildDir = path.replace(`${dir.src}pages/`, dir.build).replace('.pug', '.html');
+      let filePathInBuildDir = path.replace(`${dir.src}pages/`, dir.build).replace('.hbs', '.html');
       fs.unlink(filePathInBuildDir, (err) => {
         if (err) throw err;
         console.log(`---------- Delete:  ${filePathInBuildDir}`);
@@ -484,24 +451,20 @@ function serve() {
     });
 
   // Разметка Блоков: изменение
-  watch([`${dir.blocks}**/*.pug`], { events: ['change'], delay: 100 }, series(
-    compilePug,
+  watch([`${dir.blocks}**/*.hbs`], { events: ['change'], delay: 100 }, series(
+    compileHbs,
     reload
   ));
 
   // Разметка Блоков: добавление
-  watch([`${dir.blocks}**/*.pug`], { events: ['add'], delay: 100 }, series(
-    writePugMixinsFile,
-    compilePug,
+  watch([`${dir.blocks}**/*.hbs`], { events: ['add'], delay: 100 }, series(
+    compileHbs,
     reload
   ));
 
-  // Разметка Блоков: удаление
-  watch([`${dir.blocks}**/*.pug`], { events: ['unlink'], delay: 100 }, writePugMixinsFile);
-
   // Шаблоны pug: все события
-  watch([`${dir.src}pug/**/*.pug`, `!${dir.src}pug/mixins.pug`], { delay: 100 }, series(
-    compilePug,
+  watch([`${dir.src}templates/**/*.hbs`], { delay: 100 }, series(
+    compileHbs,
     parallel(writeSassImportsFile, writeJsRequiresFile),
     parallel(compileSass, compileJs),
     reload,
@@ -563,30 +526,30 @@ function serve() {
   // Сборка json: изменение
   watch([`${dir.data}**/*.json`], { events: ['change'], delay: 100 }, series(
     buildJson,
-    compilePug,
+    compileHbs,
     reload
   ));
 
   // Сборка json: добавление
   watch([`${dir.data}**/*.json`], { events: ['add'], delay: 100 }, series(
     buildJson,
-    compilePug,
+    compileHbs,
     reload
   ));
 
   // Сборка json: все события
   watch([`${dir.data}**/*.json`], { events: ['all'], delay: 100 }, series(
     buildJson,
-    compilePug,
+    compileHbs,
     reload
   ));
 }
 
 
 exports.build = series(
-  parallel(clearBuildDir, writePugMixinsFile),
+  parallel(clearBuildDir),
   parallel(buildJson),
-  parallel(compilePugFast, copyAssets,),
+  parallel(compileHbs, copyAssets),
   parallel(copyAdditions, copyFonts, copyBlockImg, generateSvgSprite),
   parallel(writeSassImportsFile, writeJsRequiresFile),
   parallel(compileSass, buildJs),
@@ -594,9 +557,9 @@ exports.build = series(
 
 
 exports.default = series(
-  parallel(clearBuildDir, writePugMixinsFile),
+  parallel(clearBuildDir),
   parallel(buildJson),
-  parallel(compilePugFast, copyAssets),
+  parallel(compileHbs, copyAssets),
   parallel(copyAdditions, copyFonts, copyBlockImg, generateSvgSprite),
   parallel(writeSassImportsFile, writeJsRequiresFile),
   parallel(compileSass, compileJs),
