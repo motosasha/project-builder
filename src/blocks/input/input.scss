@@ -36,6 +36,14 @@
     }
   }
 
+  &:-webkit-autofill,
+  &:-webkit-autofill:hover,
+  &:-webkit-autofill:focus {
+    border: 1px solid var(--border-button);
+    -webkit-text-fill-color: var(--back-primary);
+    -webkit-box-shadow: none;
+  }
+
   &[type="number"],
   &[type="number"]::-webkit-inner-spin-button,
   &[type="number"]::-webkit-outer-spin-button {

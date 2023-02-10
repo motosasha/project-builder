@@ -28,4 +28,12 @@
       color: var(--front-tertiary);
     }
   }
+
+  &:-webkit-autofill,
+  &:-webkit-autofill:hover,
+  &:-webkit-autofill:focus {
+    border: 1px solid var(--border-button);
+    -webkit-text-fill-color: var(--back-primary);
+    -webkit-box-shadow: none;
+  }
 }
