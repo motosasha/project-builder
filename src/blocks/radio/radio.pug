@@ -22,6 +22,6 @@ mixin radio(label, mods, name, id)
 
   label.radio(class= mods)
     input.radio__input(id= id, type= 'radio', name= name)&attributes(attributes)
-    .radio__fake-input
+    span.radio__fake-input
     if label
-      .radio__label!= label
+      span.radio__label!= label

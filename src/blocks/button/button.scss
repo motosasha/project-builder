@@ -59,4 +59,8 @@
   &[disabled] {
     cursor: not-allowed;
   }
+
+  &__title {
+    display: block;
+  }
 }

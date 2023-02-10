@@ -1,6 +1,6 @@
 //- Все примеси в этом файле должны начинаться c имени блока (button)
 
-mixin button(type, title, mods, href)
+mixin button(type, title, mods, name, id, href)
   //- Принимает:
     //-   type    {string} - тип [input|button|submit|reset|link]
     //-   title   {string} - текст кнопки
@@ -20,16 +20,16 @@ mixin button(type, title, mods, href)
     }
 
   if type === 'input'
-    input.button(type='button', class= allMods, value= title)&attributes(attributes)
+    input.button(type='button', class= allMods, name= name, id= id, value= title)&attributes(attributes)
   if type === 'button'
-    button.button(class= allMods)&attributes(attributes)
-      .button__title!= title
+    button.button(class= allMods, name= name, id= id)&attributes(attributes)
+      span.button__title!= title
   if type === 'submit'
-    button.button(class= allMods)&attributes(attributes)
-      .button__title!= title
+    button.button(class= allMods, name= name, id= id)&attributes(attributes)
+      span.button__title!= title
   if type === 'reset'
-    button.button(class= allMods)&attributes(attributes)
-      .button__title!= title
+    button.button(class= allMods, name= name, id= id)&attributes(attributes)
+      span.button__title!= title
   if type === 'link'
-    a.button(class= allMods, href= href)&attributes(attributes)
-      .button__title!= title
+    a.button(class= allMods, id= id, href= href)&attributes(attributes)
+      span.button__title!= title

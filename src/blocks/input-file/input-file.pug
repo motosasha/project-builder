@@ -1,6 +1,6 @@
 //- Все примеси в этом файле должны начинаться c имени блока (input-file)
 
-mixin input-file(mods, id, name)
+mixin input-file(mods, name, id)
 
   //- Принимает:
   //-   mods    {string} - список модификаторов
@@ -21,5 +21,5 @@ mixin input-file(mods, id, name)
 
   label.input-file(class= allMods)
     input.input-file__input(type='file', id=id, name=name)&attributes(attributes)
-    .input-file__fake-input
-      .input-file__title
+    span.input-file__fake-input
+      span.input-file__title

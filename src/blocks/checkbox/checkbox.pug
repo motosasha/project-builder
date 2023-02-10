@@ -22,6 +22,6 @@ mixin checkbox(label, mods, name, id)
 
   label.checkbox(class= allMods)
     input.checkbox__input(id= id, type= 'checkbox', name= name)&attributes(attributes)
-    .checkbox__fake-input
+    span.checkbox__fake-input
     if label
-      .checkbox__label!= label
+      span.checkbox__label!= label

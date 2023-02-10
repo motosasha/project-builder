@@ -16,9 +16,9 @@ block content
             h1.hero__title Gulp-сборщик
             p.hero__descr с библиотекой компонентов
             .hero__row
-              +button('link', 'Библиотека', 'primary', '#library')
-              +button('link', 'Инструменты', 'secondary', '#tools')
-              +button('button', 'JS-test', 'secondary', '#tools')(class='hero__js-trigger')
+              +button('link', 'Библиотека', 'primary', '', 'button-library', '#library')
+              +button('link', 'Инструменты', 'secondary', '', 'button-tools', '#tools')
+              +button('button', 'JS-test', 'secondary', 'button-name-js', 'button-js')(class='hero__js-trigger')
       section.library__section
         .library__anchor(id= library.section[1].href)
         .library__inner
@@ -27,11 +27,11 @@ block content
             +library-item(library.section[1].list[0], 'row')
               .library__grid
                 .library__row
-                  +button('input', 'I’m button', 'primary')(class='hero__trigger')
-                  +button('input', 'I’m disabled button', 'primary')(disabled)
+                  +button('input', 'I’m button', 'primary', 'button-name', 'exp-button')(class='hero__trigger')
+                  +button('input', 'I’m disabled button', 'primary', 'button-name-2', 'exp-button-2')(disabled)
                 .library__row
-                  +button('button', 'Я кнопка', 'secondary')
-                  +button('button', 'Я неактивная кнопка', 'secondary')(disabled)
+                  +button('button', 'Я кнопка', 'secondary', 'button-name-3', 'exp-button-3')
+                  +button('button', 'Я неактивная кнопка', 'secondary', 'button-name-4', 'exp-button-4')(disabled)
             +library-item(library.section[1].list[1], 'row')
               .library__inputs-list
                 +input('Введите текст', '', 'input-text-1', 'input-text-1')
@@ -43,7 +43,7 @@ block content
                 +input-password('Введите пароль', '', 'input-password', 'input-password', 'batman')
                 +input-number('0', '', 'input-number', 'number-id', 5, 10)
                 +input-file('some-mod', 'file-input', 'file-edu')
-                +input-file('some-mod', 'file-input', 'file-edu')(disabled)
+                +input-file('some-mod', 'file-input-2', 'file-edu-2')(disabled)
             +library-item(library.section[1].list[2], 'row')
               .library__inputs-list
                 +textarea('Введите текст', '', 'textarea-text-1', 'textarea-text-1')
@@ -52,19 +52,19 @@ block content
             +library-item(library.section[1].list[3], 'row')
               .library__inputs-list
                 +select(['Выберите опцию', 'Один', 'Два'], '', 'select-name', 'select-id')
-                +select(['Выберите опцию', 'Один', 'Два'], '', 'select-name', 'select-id')(disabled)
+                +select(['Выберите опцию', 'Один', 'Два'], '', 'select-name-2', 'select-id-2')(disabled)
             +library-item(library.section[1].list[4], 'row')
               .library__inputs-list
                 +checkbox('Чекбокс', '', 'some-name', 'some-id-1')(required)
-                +checkbox('Неактивный чекбокс', '', 'some-name', 'some-id-2')(disabled)
-                +checkbox('Отмеченный чекбокс', '', 'some-name', 'some-id-3')(checked)
-                +checkbox('Отмеченный неактивный чекбокс', '', 'some-name', 'some-id-4')(checked, disabled)
+                +checkbox('Неактивный чекбокс', '', 'some-name-2', 'some-id-2')(disabled)
+                +checkbox('Отмеченный чекбокс', '', 'some-name-3', 'some-id-3')(checked)
+                +checkbox('Отмеченный неактивный чекбокс', '', 'some-name-4', 'some-id-4')(checked, disabled)
             +library-item(library.section[1].list[5], 'row')
               .library__inputs-list
                 +radio('Радио-баттон', '', 'radio-name', 'some-id')(required)
-                +radio('Неактивный радио-баттон', '', 'radio-name', 'some-id')(disabled)
-                +radio('Отмеченный радио-баттон', '', 'radio-name', 'some-id')(checked)
-                +radio('Отмеченный неактивный радио-баттон', '', 'radio-name-2', 'some-id')(checked, disabled)
+                +radio('Неактивный радио-баттон', '', 'radio-name-2', 'radio-id-2')(disabled)
+                +radio('Отмеченный радио-баттон', '', 'radio-name-3', 'radio-id-3')(checked)
+                +radio('Отмеченный неактивный радио-баттон', '', 'radio-name-4', 'radio-id-4')(checked, disabled)
             +library-item(library.section[1].list[6], 'row')
               .library__inputs-list
                 +field('text', 'Имя', 'Введите имя', '', 'field-id', 'field-name', 'Д’Артаньян')(required)
@@ -74,8 +74,8 @@ block content
                   +field('text', 'Имя', 'Введите имя', '', 'name-field', 'name-field', 'Д’Артаньян')(required)
                   +field('email', 'Электропочта', 'Введите почту', '', 'mail-field', 'mail-field', 'gaskonets@musketeer.fr')(required)
                 .form__footer
-                  +checkbox('Я согласен на обработку моих персональных данных', '', 'some-name', 'some-id-1')(required)
-                  +button('submit', 'Отправить', 'primary')(class='form__js-submit')
+                  +checkbox('Я согласен на обработку моих персональных данных', '', 'some-check', 'some-check')(required)
+                  +button('submit', 'Отправить', 'primary', 'button-name-5', 'exp-button-5')(class='form__js-submit')
             +library-item(library.section[1].list[8], 'row')
               .tabs
                 .tabs__labels
