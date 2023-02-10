@@ -1,0 +1,289 @@
+<div class="library">
+  <section class="library__section">
+    <div class="library__anchor" id="start"></div>
+    @@include('./blocks/hero/hero.html')
+  </section>
+  <section class="library__section">
+    <div class="library__anchor" id="library"></div>
+    <div class="library__inner">
+      <h2 class="library__title">Библиотека компонентов</h2>
+      <ul class="library__list">
+        <li class="library__item library__item--row">
+          <div class="library__subanchor" id="button"></div>
+          <div class="library__info">
+            <h3 class="library__subtitle">button</h3>
+            <p class="library__descr">Кнопка. Универсальный класс который может использоваться для <code>button</code>, <code>input(type=”button”)</code> и ссылок</p>
+          </div>
+          <div class="library__example">
+            <div class="library__grid">
+              <div class="library__row">
+                <input class="button button--primary hero__trigger" type="button" value="I’m button"/>
+                <input class="button button--primary" type="button" value="I’m disabled button" disabled="disabled"/>
+              </div>
+              <div class="library__row">
+                <button class="button button--secondary">
+                  <span class="button__title">Я кнопка</span>
+                </button>
+                <button class="button button--secondary" disabled="disabled">
+                  <span class="button__title">Я неактивная кнопка</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="library__item library__item--row">
+          <div class="library__subanchor" id="input"></div>
+          <div class="library__info">
+            <h3 class="library__subtitle">input</h3>
+            <p class="library__descr">Поле ввода. Текст, почта, телефон, поиск, пароль, число. У поля отслеживается состояние</p>
+          </div>
+          <div class="library__example">
+            <div class="library__inputs-list">
+              <input class="input" id="input-text-1" type="text" placeholder="Введите текст" name="input-text-1"/>
+              <input class="input" id="input-text-2" type="text" placeholder="Введите текст" name="input-text-2" value="Д’Артаньян"/>
+              <input class="input" id="input-text-2d" type="text" placeholder="Введите текст" name="input-text-2" value="Д’Артаньян" disabled="disabled"/>
+              <input class="input" id="input-mail" type="email" placeholder="Введите почту" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$" name="input-mail"/>
+              <input class="input" id="input-phone" type="tel" placeholder="Введите телефон" name="input-phone"/>
+              <input class="input" id="input-search" type="search" placeholder="Поиск" name="input-search"/>
+              <input class="input" id="input-password" type="password" placeholder="Введите пароль" name="input-password" value="batman"/>
+              <input class="input" id="number-id" type="number" placeholder="0" min="0" max="10" name="name" value="5"/>
+              <label class="input-file input-file--some-mod">
+                <input class="input-file__input" type="file" id="file-input" name="file-edu" />
+                <span class="input-file__fake-input">
+                  <span class="input-file__title"></span>
+                </span>
+              </label>
+              <label class="input-file input-file--some-mod">
+                <input class="input-file__input" type="file" id="file-input2" name="file-edu" disabled="disabled"/>
+                <span class="input-file__fake-input">
+                  <span class="input-file__title"></span>
+                </span>
+              </label>
+            </div>
+          </div>
+        </li>
+        <li class="library__item library__item--row">
+          <div class="library__subanchor" id="textarea"></div>
+          <div class="library__info">
+            <h3 class="library__subtitle">textarea</h3>
+            <p class="library__descr">Текстовое поле. У поля отслеживается состояние, а также подключено автоизменение высоты</p>
+          </div>
+          <div class="library__example">
+            <div class="library__inputs-list">
+              <textarea class="textarea" id="textarea-text-1" placeholder="Введите текст" name="textarea-text-1"></textarea>
+              <textarea class="textarea" id="textarea-text-2" placeholder="Введите текст" name="textarea-text-2">Д’Артаньян</textarea>
+              <textarea class="textarea" id="textarea-text-2d" placeholder="Введите текст" name="textarea-text-2" disabled="disabled">Д’Артаньян</textarea>
+            </div>
+          </div>
+        </li>
+        <li class="library__item library__item--row">
+          <div class="library__subanchor" id="select"></div>
+          <div class="library__info">
+            <h3 class="library__subtitle">select</h3>
+            <p class="library__descr">Поле выбора. Выпадающее меню системное</p>
+          </div>
+          <div class="library__example">
+            <div class="library__inputs-list">
+              <select class="select" name="select-name" id="select-id">
+                <option value="0">Выберите опцию</option>
+                <option value="1">Один</option>
+                <option value="2">Два</option>
+              </select>
+              <select class="select" name="select-name" id="select-id2" disabled="disabled">
+                <option value="0">Выберите опцию</option>
+                <option value="1">Один</option>
+                <option value="2">Два</option>
+              </select>
+            </div>
+          </div>
+        </li>
+        <li class="library__item library__item--row">
+          <div class="library__subanchor" id="checkbox"></div>
+          <div class="library__info">
+            <h3 class="library__subtitle">checkbox</h3>
+            <p class="library__descr">Чекбокс</p>
+          </div>
+          <div class="library__example">
+            <div class="library__inputs-list">
+              <label class="checkbox">
+                <input class="checkbox__input" id="ch-id-1" type="checkbox" name="some-name" required="required"/>
+                <span class="checkbox__fake-input"></span>
+                <span class="checkbox__label">Чекбокс</span>
+              </label>
+              <label class="checkbox">
+                <input class="checkbox__input" id="ch-id-2" type="checkbox" name="some-name" disabled="disabled"/>
+                <span class="checkbox__fake-input"></span>
+                <span class="checkbox__label">Неактивный чекбокс</span>
+              </label>
+              <label class="checkbox">
+                <input class="checkbox__input" id="ch-id-3" type="checkbox" name="some-name" checked="checked"/>
+                <span class="checkbox__fake-input"></span>
+                <span class="checkbox__label">Отмеченный чекбокс</span>
+              </label>
+              <label class="checkbox">
+                <input class="checkbox__input" id="ch-id-4" type="checkbox" name="some-name" checked="checked" disabled="disabled"/>
+                <span class="checkbox__fake-input"></span>
+                <span class="checkbox__label">Отмеченный неактивный чекбокс</span>
+              </label>
+            </div>
+          </div>
+        </li>
+        <li class="library__item library__item--row">
+          <div class="library__subanchor" id="radio"></div>
+          <div class="library__info">
+            <h3 class="library__subtitle">radio</h3>
+            <p class="library__descr">Радио-кнопка</p>
+          </div>
+          <div class="library__example">
+            <div class="library__inputs-list">
+              <label class="radio">
+                <input class="radio__input" id="rad-id" type="radio" name="radio-name" required="required"/>
+                <span class="radio__fake-input"></span>
+                <span class="radio__label">Радио-баттон</span>
+              </label>
+              <label class="radio">
+                <input class="radio__input" id="rad-id-2" type="radio" name="radio-name" disabled="disabled"/>
+                <span class="radio__fake-input"></span>
+                <span class="radio__label">Неактивный радио-баттон</span>
+              </label>
+              <label class="radio">
+                <input class="radio__input" id="rad-id-3" type="radio" name="radio-name" checked="checked"/>
+                <span class="radio__fake-input"></span>
+                <span class="radio__label">Отмеченный радио-баттон</span>
+              </label>
+              <label class="radio">
+                <input class="radio__input" id="rad-id-4" type="radio" name="radio-name-2" checked="checked" disabled="disabled"/>
+                <span class="radio__fake-input"></span>
+                <span class="radio__label">Отмеченный неактивный радио-баттон</span>
+              </label>
+            </div>
+          </div>
+        </li>
+        <li class="library__item library__item--row">
+          <div class="library__subanchor" id="field"></div>
+          <div class="library__info">
+            <h3 class="library__subtitle">field</h3>
+            <p class="library__descr">Поле формы. Лейбл, информация об ошибке. Поле формы может содержать поле ввода, текстовое поле, поле выбора</p>
+          </div>
+          <div class="library__example">
+            <div class="library__inputs-list">
+              <div class="field">
+                <label class="field__inner">
+                  <input class="input field__input" id="field-id" type="text" placeholder="Введите имя" name="field-name" value="Д’Артаньян" required="required"/>
+                  <span class="field__label">Имя</span>
+                </label>
+                <div class="field__message">Текст ошибки</div>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="library__item library__item--row">
+          <div class="library__subanchor" id="form"></div>
+          <div class="library__info">
+            <h3 class="library__subtitle">form</h3>
+            <p class="library__descr">Форма</p>
+          </div>
+          <div class="library__example">
+            <form class="form">
+              <div class="form__body">
+                <div class="field">
+                  <label class="field__inner">
+                    <input class="input field__input" id="name-field" type="text" placeholder="Введите имя" name="name-field" value="Д’Артаньян" required="required"/>
+                    <span class="field__label">Имя</span>
+                  </label>
+                  <div class="field__message">Текст ошибки</div>
+                </div>
+                <div class="field">
+                  <label class="field__inner">
+                    <input class="input field__input" id="mail-field" type="email" placeholder="Введите почту" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$" name="mail-field" value="gaskonets@musketeer.fr" required="required"/>
+                    <span class="field__label">Электропочта</span>
+                  </label>
+                  <div class="field__message">Текст ошибки</div>
+                </div>
+              </div>
+              <div class="form__footer">
+                <label class="checkbox">
+                  <input class="checkbox__input" id="some-id-1" type="checkbox" name="some-name" required="required"/>
+                  <span class="checkbox__fake-input"></span>
+                  <span class="checkbox__label">Я согласен на обработку моих персональных данных</span>
+                </label>
+                <button class="button button--primary form__js-submit">
+                  <span class="button__title">Отправить</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </li>
+        <li class="library__item library__item--row">
+          <div class="library__subanchor" id="tabs"></div>
+          <div class="library__info">
+            <h3 class="library__subtitle">tabs</h3>
+            <p class="library__descr">Табы</p>
+          </div>
+          <div class="library__example">
+            <div class="tabs">
+              <div class="tabs__labels">
+                <div class="tabs__label tabs__label--active" data-href="#tab1">Таб 1</div>
+                <div class="tabs__label" data-href="#tab2">Таб 2</div>
+                <div class="tabs__label" data-href="#tab3">Таб 3</div>
+              </div>
+              <div class="tabs__panes">
+                <div class="tabs__pane tabs__pane--active" id="tab1">Содержимое, таб 1</div>
+                <div class="tabs__pane" id="tab2">Содержимое, таб 2</div>
+                <div class="tabs__pane" id="tab3">Содержимое, таб 3</div>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+  <section class="library__section">
+    <div class="library__anchor" id="tools"></div>
+    <div class="library__inner">
+      <h2 class="library__title">Инструменты</h2>
+      <ul class="library__list">
+        <li class="library__item">
+          <div class="library__subanchor" id="fluid-функция"></div>
+          <div class="library__info">
+            <h3 class="library__subtitle">fluid-функция</h3>
+            <p class="library__descr">функция для гибкого изменения размера в зависимости от ширины экрана</p>
+          </div>
+          <div class="library__example">
+            <h4 class="library__fluid">I'm a fluid heading</h4>
+          </div>
+        </li>
+        <li class="library__item">
+          <div class="library__subanchor" id="json-data"></div>
+          <div class="library__info">
+            <h3 class="library__subtitle">json-data</h3>
+            <p class="library__descr">Данные из json</p>
+          </div>
+          <div class="library__example">
+            <div class="library__data">String from json</div>
+          </div>
+        </li>
+        <li class="library__item">
+          <div class="library__subanchor" id="svg-sprite"></div>
+          <div class="library__info">
+            <h3 class="library__subtitle">svg-sprite</h3>
+            <p class="library__descr">Спрайт иконок</p>
+          </div>
+          <div class="library__example">
+            <div class="library__tiles">
+              <div class="library__tile">
+                <div class="library__tile-descr">Иконка из спрайта</div>
+                <svg class="library__icon">
+                  <use href="img/svgSprite.svg#icon__default"></use>
+                </svg>
+              </div>
+              <div class="library__tile library__tile--bg">
+                <div class="library__tile-descr">Иконка из спрайта фоном</div>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+</div>
