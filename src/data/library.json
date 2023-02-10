@@ -1,0 +1,69 @@
+{
+  "section": [
+    {
+      "title": "Начало",
+      "href": "start"
+    },
+    {
+      "title": "Библиотека компонентов",
+      "href": "library",
+      "list": [
+        {
+          "title": "button",
+          "description": "Кнопка. Универсальный класс который может использоваться для <code>button</code>, <code>input(type=”button”)</code> и ссылок"
+        },
+        {
+          "title": "input",
+          "description": "Поле ввода. Текст, почта, телефон, поиск, пароль, число. У поля отслеживается состояние"
+        },
+        {
+          "title": "textarea",
+          "description": "Текстовое поле. У поля отслеживается состояние, а также подключено автоизменение высоты"
+        },
+        {
+          "title": "select",
+          "description": "Поле выбора. Выпадающее меню системное"
+        },
+        {
+          "title": "checkbox",
+          "description": "Чекбокс"
+        },
+        {
+          "title": "radio",
+          "description": "Радио-кнопка"
+        },
+        {
+          "title": "field",
+          "description": "Поле формы. Лейбл, информация об ошибке. Поле формы может содержать поле ввода, текстовое поле, поле выбора"
+        },
+        {
+          "title": "form",
+          "description": "Форма"
+        },
+        {
+          "title": "tabs",
+          "description": "Табы"
+        }
+      ]
+    },
+    {
+      "title": "Инструменты",
+      "href": "tools",
+      "list": [
+        {
+          "title": "fluid-функция",
+          "description": "функция для гибкого изменения размера в зависимости от ширины экрана"
+        },
+        {
+          "title": "json-data",
+          "description": "Данные из json"
+        },
+        {
+          "title": "svg-sprite",
+          "description": "Спрайт иконок"
+        }
+      ]
+    }
+  ],
+  "data": "String from json"
+}

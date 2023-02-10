@@ -4,65 +4,43 @@
 .hero {
   $block-name: &; // #{$block-name}__element
 
+  border-bottom: 1px solid var(--divider);
+
   &__inner {
-    display: grid;
-    gap: fluid(8, 16, 320, 768);
-    padding: fluid(24, 56, 320, 768) 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 80px 0;
 
     @media screen and (min-width: $screen-ti) {
-      gap: fluid(16, 24, 768, 1280);
       padding: 56px 0;
     }
 
     @media screen and (min-width: $screen-d) {
-      gap: 24px;
+      padding: 80px 0;
     }
   }
 
   &__title {
-    @include header;
+    @include hero-title;
 
-    margin: 0;
+    margin: 0 0 8px;
+    background: var(--gradient);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 
   &__descr {
-    @include body;
+    @include hero-descr;
 
     margin: 0;
-    color: var(--front-primary);
+    color: var(--front-secondary);
   }
 
-  &__tiles {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    width: 100%;
-    max-width: 600px;
-  }
-
-  &__tile {
-    display: grid;
-    gap: 24px;
-    padding: 16px;
-    background-color: var(--back-secondary);
-
-    &--bg {
-      background-image: url("../img/svgSprite.svg#icon__default-view");
-      background-repeat: no-repeat;
-      background-position: center bottom 16px;
-      background-size: 64px 64px;
-    }
-  }
-
-  &__tile-descr {
-    @include body;
-
-    text-align: center;
-  }
-
-  &__icon {
-    width: 64px;
-    height: 64px;
-    margin: 0 auto;
+  &__row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 32px;
   }
 }

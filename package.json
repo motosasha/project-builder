@@ -78,16 +78,18 @@
     "pug-lint": "^2.6.0",
     "sass": "^1.57.1",
     "stylelint": "^14.16.1",
-    "stylelint-selector-bem-pattern": "^2.1.0",
     "stylelint-config-rational-order": "^0.1.2",
     "stylelint-config-standard": "^29.0.0",
     "stylelint-order": "^5.0.0",
     "stylelint-scss": "^4.3.0",
+    "stylelint-selector-bem-pattern": "^2.1.0",
     "through2": "^4.0.2",
     "webpack": "^5.21.1",
     "webpack-stream": "^7.0.0"
   },
   "dependencies": {
+    "autosize": "^5.0.2",
+    "imask": "^6.4.3",
     "sanitize.css": "^13.0.0"
   },
   "husky": {

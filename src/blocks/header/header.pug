@@ -17,13 +17,12 @@ mixin header(mods)
       }
     }
 
-  header.header(class=allMods)&attributes(attributes)
-    .grid
-      .header__inner
-        svg.logo.header__logo
-          use(href='img/svgSprite.svg#logo__default')
-        nav.header__nav
-          a.header__nav-item(href='#') About
-          a.header__nav-item(href='#') Products
-          a.header__nav-item(href='#') Price
-          a.header__nav-item(href='#') Contacts
+  header.header(class= allMods)&attributes(attributes)
+    .header__inner
+      svg.logo.header__logo
+        use(href='img/svgSprite.svg#logo__default')
+      button.header__menu
+        svg.burger(width='28', height='28', viewBox='0 0 28 28', fill='none')
+          path.burger__line.burger__line--top(d='M7 8H23C23 8 26 8 26 11C26 14 23 14 23 14H5')
+          path.burger__line.burger__line--middle(d='M5 14H23')
+          path.burger__line.burger__line--bottom(d='M19 20H5C5 20 2 20 2 17C2 14 5 14 5 14H23')

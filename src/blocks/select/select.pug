@@ -1,0 +1,25 @@
+//- Все примеси в этом файле должны начинаться c имени блока (select)
+
+mixin select(options, mods, name, id)
+
+  //- Принимает:
+  //-   options     {string} - пункты меню
+  //-   mods        {string} - список модификаторов
+  //-   name        {string} - атрибут name
+  //-   id          {string} - атрибут id
+  //- Вызов:
+        +select(['Выберите опцию', 'Один', 'Два'], 'some-mods', 'input-id', 'Текст')
+
+  -
+    // список модификаторов
+    var allMods = '';
+    if(typeof(mods) !== 'undefined' && mods) {
+      var modsList = mods.split(',');
+      for (var i = 0; i < modsList.length; i++) {
+        allMods = allMods + 'input--' + modsList[i].trim();
+      }
+    }
+
+  select.select(class=mods, name= name, id= id)&attributes(attributes)
+    each option, index in options ? options : []
+      option(value= index)!= option

@@ -56,6 +56,7 @@
         "message": "Селектор не из имени файла или БЭМ-ошибка"
       }
     ],
+    "property-no-vendor-prefix": null,
     "order/order": [
       "custom-properties",
       {

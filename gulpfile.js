@@ -468,8 +468,8 @@ function serve() {
   // Страницы: изменение, добавление
   watch([`${dir.src}pages/**/*.pug`], { events: ['change', 'add'], delay: 100 }, series(
     compilePugFast,
-    //parallel(writeSassImportsFile, writeJsRequiresFile),
-    //parallel(compileSass, compileJs),
+    parallel(writeSassImportsFile, writeJsRequiresFile),
+    parallel(compileSass, compileJs),
     reload
   ));
 
@@ -549,7 +549,7 @@ function serve() {
   ));
 
   // Спрайт SVG
-  watch([`${dir.src}symbols/*.svg`, `${dir.blocks}**/symbols/**/*.svg`], { events: ['all'], delay: 100 }, series(
+  watch([`${dir.src}symbols/*.svg`, `${dir.src}symbols/svgAsBg.xml`, `${dir.blocks}**/symbols/**/*.svg`], { events: ['all'], delay: 100 }, series(
     generateSvgSprite,
     reload,
   ));
