@@ -69,6 +69,9 @@ block content
               .library__inputs-list
                 +field('text', 'Имя', 'Введите имя', '', 'field-id', 'field-name', 'Д’Артаньян')(required)
             +library-item(library.section[1].list[7], 'row')
+              .library__inputs-list
+                +field-dp('text', 'Имя', '', 'field-dp-id', 'field-dp-name', '')(required)
+            +library-item(library.section[1].list[8], 'row')
               form.form
                 .form__body
                   +field('text', 'Имя', 'Введите имя', '', 'name-field', 'name-field', 'Д’Артаньян')(required)
@@ -76,7 +79,7 @@ block content
                 .form__footer
                   +checkbox('Я согласен на обработку моих персональных данных', '', 'some-check', 'some-check')(required)
                   +button('submit', 'Отправить', 'primary', 'button-name-5', 'exp-button-5')(class='form__js-submit')
-            +library-item(library.section[1].list[8], 'row')
+            +library-item(library.section[1].list[9], 'row')
               .tabs
                 .tabs__labels
                   .tabs__label.tabs__label--active(data-href='#tab1') Таб 1

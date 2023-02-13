@@ -3,8 +3,8 @@
 mixin field(type, label, placeholder, mods, name, id, value, max)
 
   //- Принимает:
-  //-   type    {string} - тип поля [text|email|phone|search|password|number|file|textarea|select]
-  //-   label    {string} - список модификаторов
+  //-   type        {string} - тип поля [text|email|phone|search|password|number|file|textarea|select]
+  //-   label       {string} - список модификаторов
   //-   placeholder {string} - атрибут placeholder
   //-   mods        {string} - список модификаторов
   //-   name        {string} - атрибут name
@@ -12,7 +12,7 @@ mixin field(type, label, placeholder, mods, name, id, value, max)
   //-   value       {string} - атрибут value
   //-   max         {string} - максимальное значение
   //- Вызов:
-        +field('Текст', 'some-mod')
+        +field('text', 'Имя', 'Введите имя', 'some-mod', 'field-id', 'field-name', 'Д’Артаньян')
 
   -
     // список модификаторов

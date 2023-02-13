@@ -7,7 +7,8 @@ mixin button(type, title, mods, name, id, href)
     //-   mods    {string} - список модификаторов
     //-   href    {string} - адрес, если тип «ссылка»
     //- Вызов:
-          +button('Текст', 'some-mod')
+          +button('input', 'I’m button', 'primary', 'button-name', 'button-id')
+          +button('link', 'I’m button', 'primary', 'button-name', 'button-id', '#anchor')
 
   -
     // список модификаторов
