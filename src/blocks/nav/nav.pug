@@ -11,11 +11,11 @@ mixin nav
     if(typeof(mods) !== 'undefined' && mods) {
       var modsList = mods.split(',');
       for (var i = 0; i < modsList.length; i++) {
-        allMods = allMods + ' nav--' + modsList[i].trim();
+        allMods = allMods + 'nav--' + modsList[i].trim();
       }
     }
 
-  .nav(class=allMods)&attributes(attributes)
+  nav.nav(class=allMods)&attributes(attributes)
     .nav__inner
       each section in library.section
         .nav__section

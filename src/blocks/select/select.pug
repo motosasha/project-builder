@@ -16,7 +16,7 @@ mixin select(options, mods, name, id)
     if(typeof(mods) !== 'undefined' && mods) {
       var modsList = mods.split(',');
       for (var i = 0; i < modsList.length; i++) {
-        allMods = allMods + 'input--' + modsList[i].trim();
+        allMods = allMods + 'select--' + modsList[i].trim();
       }
     }
 

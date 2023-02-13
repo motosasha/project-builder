@@ -20,7 +20,7 @@ mixin field(type, label, placeholder, mods, name, id, value, max)
     if(typeof(mods) !== 'undefined' && mods) {
       var modsList = mods.split(',');
       for (var i = 0; i < modsList.length; i++) {
-        allMods = allMods + ' field--' + modsList[i].trim();
+        allMods = allMods + 'field--' + modsList[i].trim();
       }
     }
 
@@ -46,5 +46,5 @@ mixin field(type, label, placeholder, mods, name, id, value, max)
       if type === 'select'
         +select(value, '', name, id)(class='field__select')&attributes(attributes)
       if label
-        .field__label!= label
+        span.field__label!= label
     .field__message Текст ошибки

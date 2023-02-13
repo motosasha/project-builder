@@ -15,7 +15,7 @@ mixin button(type, title, mods, name, id, href)
     if (typeof (mods) !== 'undefined' && mods) {
       var modsList = mods.split(',');
       for (var i = 0; i < modsList.length; i++) {
-        allMods = allMods + ' button--' + modsList[i].trim();
+        allMods = allMods + 'button--' + modsList[i].trim();
       }
     }
 
@@ -31,5 +31,5 @@ mixin button(type, title, mods, name, id, href)
     button.button(class= allMods, name= name, id= id)&attributes(attributes)
       span.button__title!= title
   if type === 'link'
-    a.button(class= allMods, id= id, href= href)&attributes(attributes)
+    a.button(class= allMods, test='test', id= id, href= href)&attributes(attributes)
       span.button__title!= title
