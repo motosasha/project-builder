@@ -1,0 +1,60 @@
+{
+  "title": "HBS builder",
+  "metaDescription": "description",
+  "metaKeywords": "keys",
+  "section": [
+    {
+      "title": "Начало",
+      "href": "start"
+    },
+    {
+      "title": "Библиотека компонентов",
+      "href": "library",
+      "list": [
+        {
+          "title": "button"
+        },
+        {
+          "title": "input"
+        },
+        {
+          "title": "textarea"
+        },
+        {
+          "title": "select"
+        },
+        {
+          "title": "checkbox"
+        },
+        {
+          "title": "radio"
+        },
+        {
+          "title": "field"
+        },
+        {
+          "title": "form"
+        },
+        {
+          "title": "tabs"
+        }
+      ]
+    },
+    {
+      "title": "Инструменты",
+      "href": "tools",
+      "list": [
+        {
+          "title": "fluid-функция"
+        },
+        {
+          "title": "json-data"
+        },
+        {
+          "title": "svg-sprite"
+        }
+      ]
+    }
+  ],
+  "data": "String from json"
+}

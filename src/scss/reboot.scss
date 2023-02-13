@@ -15,6 +15,7 @@ html {
   line-height: normal;
   -webkit-tap-highlight-color: rgb(var(--color-black) 0);
   -webkit-text-size-adjust: 100%; // stylelint-disable-line
+  scroll-behavior: smooth;
 }
 
 body {

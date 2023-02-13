@@ -10,13 +10,13 @@ const browserSync = require('browser-sync').create();
 const cheerio = require('gulp-cheerio');
 const cpy = require('cpy');
 const csso = require('gulp-csso');
+const data = require('gulp-data');
 const debug = require('gulp-debug');
 const del = require('del');
 const fs = require('fs');
 const getClassesFromHtml = require('get-classes-from-html');
 const ghPages = require('gh-pages');
 const handlebars = require('gulp-hb');
-const jsonConcat = require('gulp-json-concat');
 const mqPacker = require('css-mqpacker');
 const path = require('path');
 const plumber = require('gulp-plumber');
@@ -68,6 +68,7 @@ let postCssPlugins = [
   atImport()
 ];
 
+
 function compileHbs() {
   const fileList = [
     `${dir.src}pages/**/*.hbs`
@@ -80,11 +81,23 @@ function compileHbs() {
       }
     }))
     .pipe(debug({title: 'Compiles '}))
+    .pipe(
+      data(function (file) {
+        try {
+          return JSON.parse(
+            fs.readFileSync(
+              './src/data/' + path.basename(file.path).replace('.hbs', '.json')
+            )
+          );
+        } catch (err) {
+          return null;
+        }
+      })
+    )
     .pipe(handlebars()
       .partials('./src/blocks/**/*.hbs')
       .partials('./src/templates/**/*.hbs')
       .helpers(require('handlebars-layouts'))
-      .data('./src/json/data.json')
     )
     .pipe(rename(function(path) {path.extname = '.html';}))
     .pipe(prettyHtml(prettyOption))
@@ -361,22 +374,6 @@ function buildJs() {
 exports.buildJs = buildJs
 
 
-function buildJson(cb) {
-  const jsonList = `${dir.data}**/*.json`;
-  if (jsonList) {
-    return src(jsonList)
-      .pipe(plumber())
-      .pipe(jsonConcat('data.json',function(data){
-        return new Buffer.from(JSON.stringify(data));
-      }))
-      .pipe(dest(`${dir.src}json`));
-  } else {
-    cb();
-  }
-}
-exports.buildJson = buildJson;
-
-
 function copyAdditions(cb) {
   for (let item in nth.config.addAdditions) {
     let dest = `${dir.build}${nth.config.addAdditions[item]}`;
@@ -525,21 +522,18 @@ function serve() {
 
   // Сборка json: изменение
   watch([`${dir.data}**/*.json`], { events: ['change'], delay: 100 }, series(
-    buildJson,
     compileHbs,
     reload
   ));
 
   // Сборка json: добавление
   watch([`${dir.data}**/*.json`], { events: ['add'], delay: 100 }, series(
-    buildJson,
     compileHbs,
     reload
   ));
 
   // Сборка json: все события
   watch([`${dir.data}**/*.json`], { events: ['all'], delay: 100 }, series(
-    buildJson,
     compileHbs,
     reload
   ));
@@ -548,7 +542,6 @@ function serve() {
 
 exports.build = series(
   parallel(clearBuildDir),
-  parallel(buildJson),
   parallel(compileHbs, copyAssets),
   parallel(copyAdditions, copyFonts, copyBlockImg, generateSvgSprite),
   parallel(writeSassImportsFile, writeJsRequiresFile),
@@ -558,7 +551,6 @@ exports.build = series(
 
 exports.default = series(
   parallel(clearBuildDir),
-  parallel(buildJson),
   parallel(compileHbs, copyAssets),
   parallel(copyAdditions, copyFonts, copyBlockImg, generateSvgSprite),
   parallel(writeSassImportsFile, writeJsRequiresFile),
