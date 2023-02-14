@@ -20,7 +20,7 @@ mixin field(type, label, placeholder, mods, name, id, value, max)
     if(typeof(mods) !== 'undefined' && mods) {
       var modsList = mods.split(',');
       for (var i = 0; i < modsList.length; i++) {
-        allMods = allMods + 'field--' + modsList[i].trim();
+        allMods = allMods + ' field--' + modsList[i].trim();
       }
     }
 

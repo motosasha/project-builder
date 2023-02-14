@@ -16,7 +16,7 @@ mixin checkbox(label, mods, name, id)
     if(typeof(mods) !== 'undefined' && mods) {
       var modsList = mods.split(',');
       for (var i = 0; i < modsList.length; i++) {
-        allMods = allMods + 'checkbox--' + modsList[i].trim();
+        allMods = allMods + ' checkbox--' + modsList[i].trim();
       }
     }
 

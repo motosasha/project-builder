@@ -13,14 +13,14 @@ mixin header(mods)
     if(typeof(mods) !== 'undefined' && mods) {
       var modsList = mods.split(',');
       for (var i = 0; i < modsList.length; i++) {
-        allMods = allMods + 'header--' + modsList[i].trim();
+        allMods = allMods + ' header--' + modsList[i].trim();
       }
     }
 
   header.header(class= allMods)&attributes(attributes)
     .header__inner
       svg.logo.header__logo
-        use(href='img/svgSprite.svg#logo__default')
+        use(href='/img/svgSprite.svg#logo__default')
       button.header__menu
         svg.burger(width='28', height='28', viewBox='0 0 28 28', fill='none')
           path.burger__line.burger__line--top(d='M7 8H23C23 8 26 8 26 11C26 14 23 14 23 14H5')

@@ -94,6 +94,7 @@ function compilePug() {
     }))
     .pipe(debug({title: 'Compiles '}))
     .pipe(pug({
+      basedir: dir.src,
       data: { repoUrl: 'https://gitlab.thecoders.ru/a.motorygin/project-builder' },
       locals: JSON.parse(fs.readFileSync('./src/json/data.json', 'utf8'))
     }))
@@ -117,6 +118,7 @@ function compilePugFast() {
     }))
     .pipe(debug({title: 'Compiles '}))
     .pipe(pug({
+      basedir: dir.src,
       data: { repoUrl: 'https://gitlab.thecoders.ru/a.motorygin/project-builder' },
       locals: JSON.parse(fs.readFileSync('./src/json/data.json', 'utf8'))
     }))

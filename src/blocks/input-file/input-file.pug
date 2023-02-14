@@ -15,7 +15,7 @@ mixin input-file(mods, name, id)
     if(typeof(mods) !== 'undefined' && mods) {
       var modsList = mods.split(',');
       for (var i = 0; i < modsList.length; i++) {
-        allMods = allMods + 'input-file--' + modsList[i].trim();
+        allMods = allMods + ' input-file--' + modsList[i].trim();
       }
     }
 

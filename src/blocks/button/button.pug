@@ -16,7 +16,7 @@ mixin button(type, title, mods, name, id, href)
     if (typeof (mods) !== 'undefined' && mods) {
       var modsList = mods.split(',');
       for (var i = 0; i < modsList.length; i++) {
-        allMods = allMods + 'button--' + modsList[i].trim();
+        allMods = allMods + ' button--' + modsList[i].trim();
       }
     }
 
