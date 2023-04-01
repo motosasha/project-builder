@@ -25,6 +25,7 @@ const prettyHtml = require('gulp-pretty-html');
 const pxToRem = require('postcss-pxtorem');
 const rename = require('gulp-rename');
 const sass = require('gulp-sass')(require('sass'));
+const sourcemaps = require('gulp-sourcemaps');
 const svgMin = require('gulp-svgmin');
 const svgStore = require('gulp-svgstore');
 const through2 = require('through2');
@@ -329,52 +330,16 @@ function compileJs() {
       //   jquery: 'jQuery'
       // }
     }))
-    .pipe(dest(`${dir.build}js`));
-}
-exports.compileJs = compileJs;
-
-function buildJs() {
-  const entryList = {
-    'bundle': `./${dir.src}js/entry.js`,
-  };
-  return src(`${dir.src}js/entry.js`)
-    .pipe(plumber())
-    .pipe(webpackStream({
-      mode: mode,
-      entry: entryList,
-      devtool: mode === 'development' ? 'inline-source-map' : false,
-      output: {
-        filename: '[name].js',
-      },
-      resolve: {
-        alias: {
-          Utils: path.resolve(__dirname, 'src/js/utils/'),
-        },
-      },
-      module: {
-        rules: [
-          {
-            test: /\.(js)$/,
-            exclude: /(node_modules)/,
-            loader: 'babel-loader',
-            options: {
-              presets: ['@babel/preset-env']
-            }
-          }
-        ]
-      },
-      // externals: {
-      //   jquery: 'jQuery'
-      // }
-    }))
+    .pipe(sourcemaps.init())
     .pipe(uglify({
       output: {
         comments: false
       }
     }))
+    .pipe(sourcemaps.write("./"))
     .pipe(dest(`${dir.build}js`));
 }
-exports.buildJs = buildJs
+exports.compileJs = compileJs;
 
 
 function copyAdditions(cb) {
@@ -548,7 +513,7 @@ exports.build = series(
   parallel(compileHbs, copyAssets),
   parallel(copyAdditions, copyFonts, copyBlockImg, generateSvgSprite),
   parallel(writeSassImportsFile, writeJsRequiresFile),
-  parallel(compileSass, buildJs),
+  parallel(compileSass, compileJs),
 );
 
 
