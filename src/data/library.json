@@ -65,6 +65,10 @@
         {
           "title": "svg-sprite",
           "description": "Спрайт иконок"
+        },
+        {
+          "title": "dynamic sources path",
+          "description": "Динамическое изменение путей к материалам в стилях и разметке"
         }
       ]
     }

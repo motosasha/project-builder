@@ -24,6 +24,7 @@ const prettyHtml = require('gulp-pretty-html');
 const pug = require('gulp-pug');
 const pxToRem = require('postcss-pxtorem');
 const rename = require('gulp-rename');
+const replace = require('postcss-replace');
 const sass = require('gulp-sass')(require('sass'));
 const sourcemaps = require('gulp-sourcemaps');
 const svgMin = require('gulp-svgmin');
@@ -39,6 +40,7 @@ nth.config = require('./config.js');
 nth.blocksFromHtml = Object.create(nth.config.alwaysAddBlocks); // блоки из конфига сразу добавим в список блоков
 nth.scssImportsList = []; // список импортов стилей
 const dir = nth.config.dir;
+const sources = nth.config.sources;
 
 // Сообщение для компилируемых файлов
 let doNotEditMsg = '\n ВНИМАНИЕ! Этот файл генерируется автоматически.\n Любые изменения этого файла будут потеряны при следующей компиляции.\n Любое изменение проекта без возможности компиляции ДОЛЬШЕ И ДОРОЖЕ в 2-5 раз.\n\n';
@@ -50,6 +52,11 @@ let prettyOption = {
   unformatted: ['code', 'em', 'strong', 'span', 'i', 'b', 'br', 'script'],
   content_unformatted: [],
 };
+
+let pugData = {
+  repoUrl: 'https://gitlab.thecoders.ru/a.motorygin/project-builder',
+  sources
+}
 
 // Список и настройки плагинов postCSS
 let postCssPlugins = [
@@ -65,6 +72,11 @@ let postCssPlugins = [
   }),
   mqPacker({
     sort: true
+  }),
+  replace({
+    commentsOnly: false,
+    data: sources,
+    pattern: '/{{([^\\s]+?)}}/'
   }),
   atImport()
 ];
@@ -96,12 +108,12 @@ function compilePug() {
     .pipe(debug({title: 'Compiles '}))
     .pipe(pug({
       basedir: dir.src,
-      data: { repoUrl: 'https://gitlab.thecoders.ru/a.motorygin/project-builder' },
+      data: pugData,
       locals: JSON.parse(fs.readFileSync('./src/json/data.json', 'utf8'))
     }))
     .pipe(prettyHtml(prettyOption))
     .pipe(through2.obj(getClassesToBlocksList, '', ''))
-    .pipe(dest(dir.build));
+    .pipe(dest(`${dir.build}${sources.pages}`));
 }
 exports.compilePug = compilePug;
 
@@ -120,12 +132,12 @@ function compilePugFast() {
     .pipe(debug({title: 'Compiles '}))
     .pipe(pug({
       basedir: dir.src,
-      data: { repoUrl: 'https://gitlab.thecoders.ru/a.motorygin/project-builder' },
+      data: pugData,
       locals: JSON.parse(fs.readFileSync('./src/json/data.json', 'utf8'))
     }))
     .pipe(prettyHtml(prettyOption))
     .pipe(through2.obj(getClassesToBlocksList, '', ''))
-    .pipe(dest(dir.build));
+    .pipe(dest(`${dir.build}${sources.pages}`));
 }
 exports.compilePugFast = compilePugFast;
 
@@ -134,7 +146,7 @@ function copyAssets(cb) {
   let assetsPath = `${dir.src}assets/`;
   if(fileExist(assetsPath)) {
     return src(assetsPath + '**/*.*')
-      .pipe(dest(`${dir.build}assets/`))
+      .pipe(dest(`${dir.build}${sources.assets}`))
   }
   else {
     cb();
@@ -156,7 +168,7 @@ function copyBlockImg(cb) {
   console.log(copiedImages);
   if(copiedImages.length) {
     (async () => {
-      await cpy(copiedImages, `${dir.build}img`);
+      await cpy(copiedImages, `${dir.build}${sources.img}`);
       cb();
     })();
   }
@@ -218,7 +230,7 @@ function generateSvgSprite(cb) {
         parserOptions: { xmlMode: true }
       }))
       .pipe(rename('svgSprite.svg'))
-      .pipe(dest(`${dir.build}img/`));
+      .pipe(dest(`${dir.build}${sources.img}`));
   }
   else {
     cb();
@@ -280,7 +292,7 @@ function compileSass() {
       restructure: false,
       comments: false
     }))
-    .pipe(dest(`${dir.build}/css`, { sourcemaps: mode === 'development' ? '.' : false }))
+    .pipe(dest(`${dir.build}${sources.css}`, { sourcemaps: mode === 'development' ? '.' : false }))
     .pipe(browserSync.stream());
 }
 exports.compileSass = compileSass;
@@ -359,7 +371,7 @@ function compileJs() {
       }
     }))
     .pipe(sourcemaps.write("./"))
-    .pipe(dest(`${dir.build}js`));
+    .pipe(dest(`${dir.build}${sources.js}`));
 }
 exports.compileJs = compileJs;
 
@@ -382,7 +394,7 @@ exports.buildJson = buildJson;
 
 function copyAdditions(cb) {
   for (let item in nth.config.addAdditions) {
-    let dest = `${dir.build}${nth.config.addAdditions[item]}`;
+    let dest = `${dir.build}/${nth.config.addAdditions[item]}`;
     cpy(item, dest);
   }
   cb();
@@ -394,7 +406,7 @@ function copyFonts(cb) {
   let fontsPath = `${dir.src}fonts/`;
   if(fileExist(fontsPath)) {
     return src(fontsPath + '**/*.*')
-      .pipe(dest(`${dir.build}/fonts/`))
+      .pipe(dest(`${dir.build}${sources.fonts}`))
   }
   else {
     cb();
@@ -405,8 +417,8 @@ exports.copyFonts = copyFonts;
 
 function clearBuildDir() {
   return del([
-    `${dir.build}**/*`,
-    `!${dir.build}readme.md`,
+    `${dir.build}/**/*`,
+    `!${dir.build}/readme.md`,
   ]);
 }
 exports.clearBuildDir = clearBuildDir;
@@ -416,6 +428,7 @@ function reload(done) {
   browserSync.reload();
   done();
 }
+
 
 function deploy(cb) {
   ghPages.publish(path.join(process.cwd(), dir.build), '', cb).then();
@@ -446,7 +459,7 @@ function serve() {
   // Страницы: удаление
   watch([`${dir.src}pages/**/*.pug`], { delay: 100 })
     .on('unlink', function(path) {
-      let filePathInBuildDir = path.replace(`${dir.src}pages/`, dir.build).replace('.pug', '.html');
+      let filePathInBuildDir = path.replace(`${dir.src}pages/`, `${dir.build}${sources.pages}`).replace('.pug', '.html');
       fs.unlink(filePathInBuildDir, (err) => {
         if (err) throw err;
         console.log(`---------- Delete:  ${filePathInBuildDir}`);
@@ -556,7 +569,7 @@ function serve() {
 exports.build = series(
   parallel(clearBuildDir, writePugMixinsFile),
   parallel(buildJson),
-  parallel(compilePugFast, copyAssets,),
+  parallel(compilePugFast, copyAssets),
   parallel(copyAdditions, copyFonts, copyBlockImg, generateSvgSprite),
   parallel(writeSassImportsFile, writeJsRequiresFile),
   parallel(compileSass, compileJs),

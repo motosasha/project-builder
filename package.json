@@ -73,6 +73,7 @@
     "postcss": "^8.4.21",
     "postcss-import": "^14.0.0",
     "postcss-pxtorem": "^6.0.0",
+    "postcss-replace": "^2.0.1",
     "postcss-scss": "^4.0.6",
     "prettier": "2.8.1",
     "pug-lint": "^2.6.0",

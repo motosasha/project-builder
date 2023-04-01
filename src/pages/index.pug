@@ -1,4 +1,4 @@
-extends /templates/layout_default.pug
+extends ../templates/layout_default.pug
 
 block variables
   - isMainPage = false
@@ -103,6 +103,13 @@ block content
                 .library__tile
                   .library__tile-descr Иконка из спрайта
                   svg.library__icon
-                    use(href='/img/svgSprite.svg#icon__default')
-                .library__tile.library__tile--bg
+                    use(href= src.icon + 'icon__default')
+                .library__tile.library__tile--icon-bg
                   .library__tile-descr Иконка из спрайта фоном
+            +library-item(library.section[2].list[3])
+              .library__tiles
+                .library__tile
+                  .library__tile-descr Картинка
+                  img.library__img(src= src.img + 'img__gulp.jpg', alt='Gulp logo')
+                .library__tile.library__tile--img-bg
+                  .library__tile-descr Картинка фоном
