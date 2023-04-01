@@ -186,8 +186,11 @@ function generateSvgSprite(cb) {
       .pipe(svgStore({ inlineSvg: true }))
       .pipe(cheerio({
         run: function ($) {
-          let addition = fs.readFileSync(dir.svgAsBg, 'utf8');
-          $('svg').append(addition);
+          let addition;
+          try {
+            addition = fs.readFileSync(dir.svgAsBg, 'utf8');
+            $('svg').append(addition);
+          } catch (err) { /**/ }
         },
         parserOptions: { xmlMode: true }
       }))
