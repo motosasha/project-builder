@@ -29,10 +29,11 @@
       width: 10px;
       height: 6px;
       margin: 3px 2px;
-      border: 2px solid var(--front-invert);
+      border: 2px solid transparent;
       border-top: none;
       border-right: none;
       transform: rotate(-45deg);
+      transition: border-color 0.125s ease;
       content: "";
     }
   }
@@ -50,6 +51,15 @@
     background: var(--brand-primary-light);
     border: 1px solid var(--brand-primary-light);
     cursor: not-allowed;
+  }
+
+  &__input:checked + &__fake-input::after {
+    border-color: var(--front-invert);
+  }
+
+  &__input[disabled]:checked + &__fake-input::after {
+    border-color: var(--front-invert);
+    opacity: 0.5;
   }
 
   &__label {
