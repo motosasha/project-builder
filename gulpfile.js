@@ -23,6 +23,7 @@ const postcss = require('gulp-postcss');
 const prettyHtml = require('gulp-pretty-html');
 const pxToRem = require('postcss-pxtorem');
 const rename = require('gulp-rename');
+const replace = require('postcss-replace');
 const rigger = require('gulp-rigger');
 const sass = require('gulp-sass')(require('sass'));
 const sourcemaps = require('gulp-sourcemaps');
@@ -39,6 +40,7 @@ nth.config = require('./config.js');
 nth.blocksFromHtml = Object.create(nth.config.alwaysAddBlocks); // блоки из конфига сразу добавим в список блоков
 nth.scssImportsList = []; // список импортов стилей
 const dir = nth.config.dir;
+const sources = nth.config.sources;
 
 // Сообщение для компилируемых файлов
 let doNotEditMsg = '\n ВНИМАНИЕ! Этот файл генерируется автоматически.\n Любые изменения этого файла будут потеряны при следующей компиляции.\n Любое изменение проекта без возможности компиляции ДОЛЬШЕ И ДОРОЖЕ в 2-5 раз.\n\n';
@@ -66,6 +68,11 @@ let postCssPlugins = [
   mqPacker({
     sort: true
   }),
+  replace({
+    commentsOnly: false,
+    data: sources,
+    pattern: '/{{([^\\s]+?)}}/'
+  }),
   atImport()
 ];
 
@@ -90,7 +97,7 @@ function htmlBuild(cb) {
       }))
       .pipe(prettyHtml(prettyOption))
       .pipe(through2.obj(getClassesToBlocksList, '', ''))
-      .pipe(dest(dir.build));
+      .pipe(dest(`${dir.build}${sources.pages}`));
   } else {
     cb()
   }
@@ -102,7 +109,7 @@ function copyAssets(cb) {
   let assetsPath = `${dir.src}assets/`;
   if(fileExist(assetsPath)) {
     return src(assetsPath + '**/*.*')
-      .pipe(dest(`${dir.build}assets/`))
+      .pipe(dest(`${dir.build}${sources.assets}`))
   }
   else {
     cb();
@@ -124,7 +131,7 @@ function copyBlockImg(cb) {
   console.log(copiedImages);
   if(copiedImages.length) {
     (async () => {
-      await cpy(copiedImages, `${dir.build}img`);
+      await cpy(copiedImages, `${dir.build}${sources.img}`);
       cb();
     })();
   }
@@ -186,7 +193,7 @@ function generateSvgSprite(cb) {
         parserOptions: { xmlMode: true }
       }))
       .pipe(rename('svgSprite.svg'))
-      .pipe(dest(`${dir.build}img/`));
+      .pipe(dest(`${dir.build}${sources.img}`));
   }
   else {
     cb();
@@ -248,7 +255,7 @@ function compileSass() {
       restructure: false,
       comments: false
     }))
-    .pipe(dest(`${dir.build}/css`, { sourcemaps: mode === 'development' ? '.' : false }))
+    .pipe(dest(`${dir.build}${sources.css}`, { sourcemaps: mode === 'development' ? '.' : false }))
     .pipe(browserSync.stream());
 }
 exports.compileSass = compileSass;
@@ -327,14 +334,14 @@ function compileJs() {
       }
     }))
     .pipe(sourcemaps.write("./"))
-    .pipe(dest(`${dir.build}js`));
+    .pipe(dest(`${dir.build}${sources.js}`));
 }
 exports.compileJs = compileJs;
 
 
 function copyAdditions(cb) {
   for (let item in nth.config.addAdditions) {
-    let dest = `${dir.build}${nth.config.addAdditions[item]}`;
+    let dest = `${dir.build}/${nth.config.addAdditions[item]}`;
     cpy(item, dest);
   }
   cb();
@@ -346,7 +353,7 @@ function copyFonts(cb) {
   let fontsPath = `${dir.src}fonts/`;
   if(fileExist(fontsPath)) {
     return src(fontsPath + '**/*.*')
-      .pipe(dest(`${dir.build}/fonts/`))
+      .pipe(dest(`${dir.build}${sources.fonts}`))
   }
   else {
     cb();
@@ -357,8 +364,8 @@ exports.copyFonts = copyFonts;
 
 function clearBuildDir() {
   return del([
-    `${dir.build}**/*`,
-    `!${dir.build}readme.md`,
+    `${dir.build}/**/*`,
+    `!${dir.build}/readme.md`,
   ]);
 }
 exports.clearBuildDir = clearBuildDir;
@@ -368,6 +375,7 @@ function reload(done) {
   browserSync.reload();
   done();
 }
+
 
 function deploy(cb) {
   ghPages.publish(path.join(process.cwd(), dir.build), '', cb).then();
@@ -398,7 +406,7 @@ function serve() {
   // Страницы: удаление
   watch([`${dir.src}pages/**/*.html`], { delay: 100 })
     .on('unlink', function(path) {
-      let filePathInBuildDir = path.replace(`${dir.src}pages/`, dir.build).replace('.html', '.html');
+      let filePathInBuildDir = path.replace(`${dir.src}pages/`, `${dir.build}${sources.pages}`).replace('.html', '.html');
       fs.unlink(filePathInBuildDir, (err) => {
         if (err) throw err;
         console.log(`---------- Delete:  ${filePathInBuildDir}`);

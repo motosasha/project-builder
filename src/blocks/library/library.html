@@ -286,13 +286,29 @@
           <div class="library__example">
             <div class="library__tiles">
               <div class="library__tile">
-                <div class="library__tile-descr">Иконка из спрайта</div>
-                <svg class="library__icon">
-                  <use href="/img/svgSprite.svg#icon__default"></use>
-                </svg>
+                <div class="library__tile-descr">Иконка из спрайта</div><svg class="library__icon">
+                <use href="/img/svgSprite.svg#icon__default"></use>
+              </svg>
               </div>
-              <div class="library__tile library__tile--bg">
+              <div class="library__tile library__tile--icon-bg">
                 <div class="library__tile-descr">Иконка из спрайта фоном</div>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="library__item">
+          <div class="library__subanchor" id="dynamic-sources-path"></div>
+          <div class="library__info">
+            <h3 class="library__subtitle">dynamic-sources-path</h3>
+            <p class="library__descr">Динамическое изменение путей к материалам в стилях. Используйте /{{ ... }}/ для автоматической замены части пути (пример: «../{{img}}/filename.jpg» будет заменен на «../img/filename.jpg»), если в переменной img лежит `/img/`</p>
+          </div>
+          <div class="library__example">
+            <div class="library__tiles">
+              <div class="library__tile">
+                <div class="library__tile-descr">Картинка</div><img class="library__img" src="/img/img__gulp.jpg" alt="Gulp logo">
+              </div>
+              <div class="library__tile library__tile--img-bg">
+                <div class="library__tile-descr">Картинка фоном</div>
               </div>
             </div>
           </div>

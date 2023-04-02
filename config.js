@@ -1,5 +1,23 @@
 /* global module */
 
+let sources = {
+  "js": "/js/",
+  "css": "/css/",
+  "img": "/img/",
+  "fonts": "/fonts/",
+  "pages": "/",
+  "assets": "/assets/",
+  get icon() {
+    return `${this.img}svgSprite.svg#`;
+  }
+}
+
+let addAdditions = {
+  "src/img/**/*.*": sources.img,
+  "src/favicon/*.*": sources.img + '/favicon',
+  // "node_modules/somePackage/images/*.{png,svg,jpg,jpeg}": "img/",
+};
+
 let config = {
   "notGetBlocks": [],
   "ignoredBlocks": [
@@ -28,18 +46,15 @@ let config = {
   "addJsAfter": [
     "./script.js",
   ],
-  "addAdditions": {
-    "src/img/**/*.*": "img/",
-    "src/favicon/*.*": "img/favicon",
-    // "node_modules/somePackage/images/*.{png,svg,jpg,jpeg}": "img/",
-  },
+  "addAdditions": addAdditions,
   "dir": {
     "src": "src/",
     "data": "src/data/",
-    "build": "build/",
     "blocks": "src/blocks/",
-    "svgAsBg": "src/symbols/svgAsBg.xml"
-  }
+    "svgAsBg": "src/symbols/svgAsBg.xml",
+    "build": "build",
+  },
+  "sources": sources
 };
 
 module.exports = config;
