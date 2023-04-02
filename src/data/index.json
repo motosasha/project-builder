@@ -52,6 +52,9 @@
         },
         {
           "title": "svg-sprite"
+        },
+        {
+          "title": "dynamic-sources-path"
         }
       ]
     }

@@ -29,7 +29,7 @@
   &__title {
     @include library-title;
 
-    margin: 0;
+    margin: 0 0 40px;
   }
 
   &__list {
@@ -115,11 +115,18 @@
     padding: 16px;
     background-color: var(--back-secondary);
 
-    &--bg {
-      background-image: url("../img/svgSprite.svg#icon__default-view");
+    &--icon-bg {
+      background-image: url("../{{icon}}/icon__default-view");
       background-repeat: no-repeat;
       background-position: center bottom 16px;
       background-size: 64px 64px;
+    }
+
+    &--img-bg {
+      background-image: url("../{{img}}/img__gulp.jpg");
+      background-repeat: no-repeat;
+      background-position: center bottom 16px;
+      background-size: 128px 72px;
     }
   }
 
@@ -135,6 +142,13 @@
     margin: 0 auto;
   }
 
+  &__img {
+    width: 128px;
+    height: auto;
+    aspect-ratio: 64/36;
+    margin: 0 auto;
+  }
+
   &__fluid {
     @include fluid-text;
 
@@ -142,5 +156,11 @@
     background: var(--gradient);
     background-clip: text;
     -webkit-text-fill-color: transparent;
+  }
+
+  code {
+    padding: 4px 8px;
+    color: var(--brand-primary);
+    background-color: var(--back-secondary);
   }
 }
