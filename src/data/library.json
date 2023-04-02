@@ -67,8 +67,8 @@
           "description": "Спрайт иконок"
         },
         {
-          "title": "dynamic sources path",
-          "description": "Динамическое изменение путей к материалам в стилях и разметке"
+          "title": "dynamic-sources-path",
+          "description": "Динамическое изменение путей к материалам в стилях и разметке. Используйте <code>/{{ ... }}/</code> для автоматической замены части пути (пример: <code>../{{img}}/filename.jpg</code> будет заменен на <code>../img/filename.jpg</code>), если в переменной img лежит <code>/img/</code>. Для разметки можно обратиться к объекту <code>src</code> (пример: <code>href= src.icon + 'icon__default'</code> будет заменен на <code>href='/img/svgSprite.svg#icon__default'</code>)"
         }
       ]
     }

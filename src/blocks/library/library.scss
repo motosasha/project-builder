@@ -157,4 +157,10 @@
     background-clip: text;
     -webkit-text-fill-color: transparent;
   }
+
+  code {
+    padding: 4px 8px;
+    color: var(--brand-primary);
+    background-color: var(--back-secondary);
+  }
 }
