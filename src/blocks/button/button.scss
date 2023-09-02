@@ -17,6 +17,10 @@
   transition: background 0.25s ease, border 0.25s ease, color 0.25s ease;
   appearance: none;
 
+  &:focus {
+    outline: 3px solid var(--brand-primary-light);
+  }
+
   &--primary {
     background: var(--brand-primary);
     border: 1px solid var(--brand-primary);
@@ -50,10 +54,6 @@
 
   &--disabled {
     pointer-events: none;
-  }
-
-  &:focus {
-    outline: 3px solid var(--brand-primary-light);
   }
 
   &[disabled] {

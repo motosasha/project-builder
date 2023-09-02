@@ -13,7 +13,6 @@ __MACOSX
 _arc/
 bower_components/
 node_modules/
-.vscode/
 .publish/
 .idea/
 .DS_Store

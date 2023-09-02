@@ -70,11 +70,11 @@
       },
       {
         "type": "rule",
-        "selector": "^&--[-a-z0-9]+"
+        "selector": "^&:\\w+$"
       },
       {
         "type": "rule",
-        "selector": "^&:\\w+$"
+        "selector": "^&--[-a-z0-9]+"
       },
       {
         "type": "rule",
