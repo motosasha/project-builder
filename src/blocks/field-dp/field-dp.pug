@@ -5,14 +5,14 @@ mixin field-dp(type, label, mods, name, id, value, max)
 
   //- Принимает:
   //-   type        {string} - тип поля [text|email|phone|search|password|number|file|textarea]
-  //-   label       {string} - список модификаторов
+  //-   label       {string} - заголовок поля
   //-   mods        {string} - список модификаторов
   //-   name        {string} - атрибут name
   //-   id          {string} - атрибут id
   //-   value       {string} - атрибут value
   //-   max         {string} - максимальное значение
   //- Вызов:
-        +field-dp('text', 'Имя', 'some-mod', 'field-id', 'field-name', 'Д’Артаньян')
+        +field-dp('text', 'Имя', 'some-mod', 'field-name', 'field-id', 'Д’Артаньян')
 
   -
     // список модификаторов

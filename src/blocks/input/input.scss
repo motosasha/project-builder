@@ -17,13 +17,13 @@
     color: var(--front-secondary);
   }
 
+  &:focus {
+    outline: 3px solid var(--brand-primary-light);
+  }
+
   &--has-value,
   &:focus {
     border: 1px solid var(--brand-primary);
-  }
-
-  &:focus {
-    outline: 3px solid var(--brand-primary-light);
   }
 
   &[disabled] {

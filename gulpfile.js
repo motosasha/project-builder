@@ -41,6 +41,7 @@ nth.blocksFromHtml = Object.create(nth.config.alwaysAddBlocks); // блоки и
 nth.scssImportsList = []; // список импортов стилей
 const dir = nth.config.dir;
 const sources = nth.config.sources;
+const paths = nth.config.paths;
 
 // Сообщение для компилируемых файлов
 let doNotEditMsg = '\n ВНИМАНИЕ! Этот файл генерируется автоматически.\n Любые изменения этого файла будут потеряны при следующей компиляции.\n Любое изменение проекта без возможности компиляции ДОЛЬШЕ И ДОРОЖЕ в 2-5 раз.\n\n';
@@ -55,7 +56,7 @@ let prettyOption = {
 
 let pugData = {
   repoUrl: 'https://gitlab.thecoders.ru/a.motorygin/project-builder',
-  sources
+  paths
 }
 
 // Список и настройки плагинов postCSS

@@ -12,6 +12,18 @@ let sources = {
   }
 }
 
+let paths = {
+  "js": "js/",
+  "css": "css/",
+  "img": "./img/",
+  "fonts": "fonts/",
+  "pages": "/",
+  "assets": "./assets/",
+  get icon() {
+    return `${this.img}svgSprite.svg#`;
+  }
+}
+
 let addAdditions = {
   "src/img/**/*.*": sources.img,
   "src/favicon/*.*": sources.img + '/favicon',
@@ -54,7 +66,8 @@ let config = {
     "svgAsBg": "src/symbols/svgAsBg.xml",
     "build": "build",
   },
-  "sources": sources
+  "sources": sources,
+  "paths": paths
 };
 
 module.exports = config;
