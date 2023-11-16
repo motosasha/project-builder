@@ -29,6 +29,7 @@ const sass = require('gulp-sass')(require('sass'));
 const sourcemaps = require('gulp-sourcemaps');
 const svgMin = require('gulp-svgmin');
 const svgStore = require('gulp-svgstore');
+const TerserPlugin = require('terser-webpack-plugin');
 const through2 = require('through2');
 const uglify = require('gulp-uglify-es').default;
 const webpackStream = require('webpack-stream');
@@ -56,7 +57,7 @@ let prettyOption = {
 
 let pugData = {
   repoUrl: 'https://gitlab.thecoders.ru/a.motorygin/project-builder',
-  paths
+  sources
 }
 
 // Список и настройки плагинов postCSS
@@ -85,10 +86,12 @@ let postCssPlugins = [
 
 function writePugMixinsFile(cb) {
   let allBlocksWithPugFiles = getDirectories('pug');
+  console.log(allBlocksWithPugFiles)
   let pugMixins = '//-' + doNotEditMsg.replace(/\n /gm,'\n  ');
   allBlocksWithPugFiles.forEach(function(blockName) {
     pugMixins += `include ${dir.blocks.replace(dir.src,'../')}${blockName}/${blockName}.pug\n`;
   });
+  console.log(pugMixins)
   fs.writeFileSync(`${dir.src}templates/mixins.pug`, pugMixins);
   cb();
 }
@@ -114,7 +117,7 @@ function compilePug() {
     }))
     .pipe(prettyHtml(prettyOption))
     .pipe(through2.obj(getClassesToBlocksList, '', ''))
-    .pipe(dest(`${dir.build}${sources.pages}`));
+    .pipe(dest(`${dir.build}${paths.pages}`));
 }
 exports.compilePug = compilePug;
 
@@ -138,7 +141,7 @@ function compilePugFast() {
     }))
     .pipe(prettyHtml(prettyOption))
     .pipe(through2.obj(getClassesToBlocksList, '', ''))
-    .pipe(dest(`${dir.build}${sources.pages}`));
+    .pipe(dest(`${dir.build}${paths.pages}`));
 }
 exports.compilePugFast = compilePugFast;
 
@@ -147,7 +150,7 @@ function copyAssets(cb) {
   let assetsPath = `${dir.src}assets/`;
   if(fileExist(assetsPath)) {
     return src(assetsPath + '**/*.*')
-      .pipe(dest(`${dir.build}${sources.assets}`))
+      .pipe(dest(`${dir.build}${paths.assets}`))
   }
   else {
     cb();
@@ -169,7 +172,7 @@ function copyBlockImg(cb) {
   console.log(copiedImages);
   if(copiedImages.length) {
     (async () => {
-      await cpy(copiedImages, `${dir.build}${sources.img}`);
+      await cpy(copiedImages, `${dir.build}${paths.img}`);
       cb();
     })();
   }
@@ -204,8 +207,15 @@ function generateSvgSprite(cb) {
       .pipe(svgMin(function() {
         return {
           plugins: [
+            'removeDoctype',
             {
               cleanupIDs: { minify: true }
+            },
+            {
+              name: 'addAttributesToSVGElement',
+              params: {
+                attribute: "mySvg"
+              }
             },
             {
               name: 'removeAttrs',
@@ -231,7 +241,7 @@ function generateSvgSprite(cb) {
         parserOptions: { xmlMode: true }
       }))
       .pipe(rename('svgSprite.svg'))
-      .pipe(dest(`${dir.build}${sources.img}`));
+      .pipe(dest(`${dir.build}${paths.img}`));
   }
   else {
     cb();
@@ -293,7 +303,7 @@ function compileSass() {
       restructure: false,
       comments: false
     }))
-    .pipe(dest(`${dir.build}${sources.css}`, { sourcemaps: mode === 'development' ? '.' : false }))
+    .pipe(dest(`${dir.build}${paths.css}`, { sourcemaps: mode === 'development' ? '.' : false }))
     .pipe(browserSync.stream());
 }
 exports.compileSass = compileSass;
@@ -361,6 +371,11 @@ function compileJs() {
           }
         ]
       },
+      optimization: {
+        minimizer: [new TerserPlugin({
+          extractComments: false,
+        })],
+      },
       // externals: {
       //   jquery: 'jQuery'
       // }
@@ -372,7 +387,7 @@ function compileJs() {
       }
     }))
     .pipe(sourcemaps.write("./"))
-    .pipe(dest(`${dir.build}${sources.js}`));
+    .pipe(dest(`${dir.build}${paths.js}`));
 }
 exports.compileJs = compileJs;
 
@@ -407,7 +422,7 @@ function copyFonts(cb) {
   let fontsPath = `${dir.src}fonts/`;
   if(fileExist(fontsPath)) {
     return src(fontsPath + '**/*.*')
-      .pipe(dest(`${dir.build}${sources.fonts}`))
+      .pipe(dest(`${dir.build}${paths.fonts}`))
   }
   else {
     cb();
@@ -460,7 +475,7 @@ function serve() {
   // Страницы: удаление
   watch([`${dir.src}pages/**/*.pug`], { delay: 100 })
     .on('unlink', function(path) {
-      let filePathInBuildDir = path.replace(`${dir.src}pages/`, `${dir.build}${sources.pages}`).replace('.pug', '.html');
+      let filePathInBuildDir = path.replace(`${dir.src}pages/`, `${dir.build}${paths.pages}`).replace('.pug', '.html');
       fs.unlink(filePathInBuildDir, (err) => {
         if (err) throw err;
         console.log(`---------- Delete:  ${filePathInBuildDir}`);
@@ -656,6 +671,7 @@ function fileExist(filepath){
  */
 function getDirectories(ext) {
   let source = dir.blocks;
+  console.log('dir', dir.blocks)
   return fs.readdirSync(source)
     .filter(item => fs.lstatSync(source + item).isDirectory())
     .filter(item => fileExist(source + item + '/' + item + '.' + ext));

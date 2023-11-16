@@ -6,15 +6,15 @@ mixin footer(mods)
   //- Принимает:
   //-   mods    {string} - список модификаторов
   //- Вызов:
-        +footer('some-mod')
+        +footer("some-mod")
 
   -
     // список модификаторов
-    var allMods = '';
-    if(typeof(mods) !== 'undefined' && mods) {
-      var modsList = mods.split(',');
+    var allMods = "";
+    if(typeof(mods) !== "undefined" && mods) {
+      var modsList = mods.split(",");
       for (var i = 0; i < modsList.length; i++) {
-        allMods = allMods + ' footer--' + modsList[i].trim();
+        allMods = allMods + " footer--" + modsList[i].trim();
       }
     }
 

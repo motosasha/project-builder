@@ -118,14 +118,14 @@
     background-color: var(--back-secondary);
 
     &--icon-bg {
-      background-image: url("../{{icon}}/icon__default-view");
+      background-image: url("/{{icon}}/icon__default-view");
       background-repeat: no-repeat;
       background-position: center bottom 16px;
       background-size: 64px 64px;
     }
 
     &--img-bg {
-      background-image: url("../{{img}}/img__gulp.jpg");
+      background-image: url("/{{img}}/img__gulp.jpg");
       background-repeat: no-repeat;
       background-position: center bottom 16px;
       background-size: 128px 72px;

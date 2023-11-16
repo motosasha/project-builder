@@ -10,19 +10,19 @@ mixin input(placeholder, mods, name, id, value)
   //-   id          {string} - атрибут id
   //-   value       {string} - атрибут value
   //- Вызов:
-        +input('Введите текст', 'some-mods', 'input-name', 'input-id', 'Текст')
+        +input("Введите текст", "some-mods", "input-name", "input-id", "Текст")
 
   -
     // список модификаторов
-    var allMods = '';
-    if(typeof(mods) !== 'undefined' && mods) {
-      var modsList = mods.split(',');
+    var allMods = "";
+    if(typeof(mods) !== "undefined" && mods) {
+      var modsList = mods.split(",");
       for (var i = 0; i < modsList.length; i++) {
-        allMods = allMods + ' input--' + modsList[i].trim();
+        allMods = allMods + " input--" + modsList[i].trim();
       }
     }
 
-  input.input(class= allMods, id= id, type='text', placeholder= placeholder, name= name, value= value)&attributes(attributes)
+  input.input(class= allMods, id= id, type="text", placeholder= placeholder, name= name, value= value)&attributes(attributes)
 
 mixin input-email(placeholder, mods, name, id, value)
 
@@ -33,19 +33,19 @@ mixin input-email(placeholder, mods, name, id, value)
   //-   id          {string} - атрибут id
   //-   value       {string} - атрибут value
   //- Вызов:
-        +input('Введите текст', 'some-mods', 'input-id', 'Текст')
+        +input("Введите текст", "some-mods", "input-id", "Текст")
 
   -
     // список модификаторов
-    var allMods = '';
-    if(typeof(mods) !== 'undefined' && mods) {
-      var modsList = mods.split(',');
+    var allMods = "";
+    if(typeof(mods) !== "undefined" && mods) {
+      var modsList = mods.split(",");
       for (var i = 0; i < modsList.length; i++) {
-        allMods = allMods + 'input--' + modsList[i].trim();
+        allMods = allMods + "input--" + modsList[i].trim();
       }
     }
 
-  input.input(class= allMods, id= id, type='email', placeholder= placeholder, pattern='[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$', name= name, value= value)&attributes(attributes)
+  input.input(class= allMods, id= id, type="email", placeholder= placeholder, pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$", name= name, value= value)&attributes(attributes)
 
 mixin input-phone(placeholder, mods, name, id, value)
 
@@ -56,19 +56,19 @@ mixin input-phone(placeholder, mods, name, id, value)
   //-   id          {string} - атрибут id
   //-   value       {string} - атрибут value
   //- Вызов:
-        +input('Введите текст', 'some-mods', 'input-id', 'Текст')
+        +input("Введите текст", "some-mods", "input-id", "Текст")
 
   -
     // список модификаторов
-    var allMods = '';
-    if(typeof(mods) !== 'undefined' && mods) {
-      var modsList = mods.split(',');
+    var allMods = "";
+    if(typeof(mods) !== "undefined" && mods) {
+      var modsList = mods.split(",");
       for (var i = 0; i < modsList.length; i++) {
-        allMods = allMods + 'input--' + modsList[i].trim();
+        allMods = allMods + "input--" + modsList[i].trim();
       }
     }
 
-  input.input(class= allMods, id= id, type='tel', placeholder= placeholder, name= name, value= value)&attributes(attributes)
+  input.input(class= allMods, id= id, type="tel", placeholder= placeholder, name= name, value= value)&attributes(attributes)
 
 mixin input-search(placeholder, mods, name, id, value)
 
@@ -79,19 +79,19 @@ mixin input-search(placeholder, mods, name, id, value)
   //-   id          {string} - атрибут id
   //-   value       {string} - атрибут value
   //- Вызов:
-        +input('Введите текст', 'some-mods', 'input-id', 'Текст')
+        +input("Введите текст", "some-mods", "input-id", "Текст")
 
   -
     // список модификаторов
-    var allMods = '';
-    if(typeof(mods) !== 'undefined' && mods) {
-      var modsList = mods.split(',');
+    var allMods = "";
+    if(typeof(mods) !== "undefined" && mods) {
+      var modsList = mods.split(",");
       for (var i = 0; i < modsList.length; i++) {
-        allMods = allMods + 'input--' + modsList[i].trim();
+        allMods = allMods + "input--" + modsList[i].trim();
       }
     }
 
-  input.input(class= allMods, id= id, type='search', placeholder= placeholder, name= name, value= value)&attributes(attributes)
+  input.input(class= allMods, id= id, type="search", placeholder= placeholder, name= name, value= value)&attributes(attributes)
 
 mixin input-password(placeholder, mods, name, id, value)
 
@@ -102,19 +102,19 @@ mixin input-password(placeholder, mods, name, id, value)
   //-   id          {string} - атрибут id
   //-   value       {string} - атрибут value
   //- Вызов:
-        +input('Введите текст', 'some-mods', 'input-id', 'Текст')
+        +input("Введите текст", "some-mods", "input-id", "Текст")
 
   -
     // список модификаторов
-    var allMods = '';
-    if(typeof(mods) !== 'undefined' && mods) {
-      var modsList = mods.split(',');
+    var allMods = "";
+    if(typeof(mods) !== "undefined" && mods) {
+      var modsList = mods.split(",");
       for (var i = 0; i < modsList.length; i++) {
-        allMods = allMods + 'input--' + modsList[i].trim();
+        allMods = allMods + "input--" + modsList[i].trim();
       }
     }
 
-  input.input(class= allMods, id= id, type='password', placeholder= placeholder, name= name, value= value)&attributes(attributes)
+  input.input(class= allMods, id= id, type="password", placeholder= placeholder, name= name, value= value)&attributes(attributes)
 
 mixin input-number(placeholder, mods, name, id, value, max)
 
@@ -126,16 +126,16 @@ mixin input-number(placeholder, mods, name, id, value, max)
   //-   value       {string} - атрибут value
   //-   max         {string} - максимальное значение
   //- Вызов:
-        +input('Введите текст', 'some-mods', 'input-id', 'Текст')
+        +input("Введите текст", "some-mods", "input-id", "Текст")
 
   -
     // список модификаторов
-    var allMods = '';
-    if(typeof(mods) !== 'undefined' && mods) {
-      var modsList = mods.split(',');
+    var allMods = "";
+    if(typeof(mods) !== "undefined" && mods) {
+      var modsList = mods.split(",");
       for (var i = 0; i < modsList.length; i++) {
-        allMods = allMods + 'input--' + modsList[i].trim();
+        allMods = allMods + "input--" + modsList[i].trim();
       }
     }
 
-  input.input(class= allMods, id= id, type='number', placeholder= placeholder, min='0', max= max, name, value= value)&attributes(attributes)
+  input.input(class= allMods, id= id, type="number", placeholder= placeholder, min="0", max= max, name, value= value)&attributes(attributes)

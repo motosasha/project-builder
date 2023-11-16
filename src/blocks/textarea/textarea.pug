@@ -10,15 +10,15 @@ mixin textarea(placeholder, mods, name, id, value)
   //-   id          {string} - атрибут id
   //-   value       {string} - атрибут value
   //- Вызов:
-        +textarea('Введите текст', 'some-mods', 'textarea-name', 'textarea-id', 'Текст')
+        +textarea("Введите текст", "some-mods", "textarea-name", "textarea-id", "Текст")
 
   -
     // список модификаторов
-    var allMods = '';
-    if(typeof(mods) !== 'undefined' && mods) {
-      var modsList = mods.split(',');
+    var allMods = "";
+    if(typeof(mods) !== "undefined" && mods) {
+      var modsList = mods.split(",");
       for (var i = 0; i < modsList.length; i++) {
-        allMods = allMods + ' textarea--' + modsList[i].trim();
+        allMods = allMods + " textarea--" + modsList[i].trim();
       }
     }
 

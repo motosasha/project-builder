@@ -1,32 +1,37 @@
 /* global module */
 
-let sources = {
-  "js": "/js/",
-  "css": "/css/",
-  "img": "/img/",
-  "fonts": "/fonts/",
+const prefixPath = '/'
+const prefixSource = '/'
+
+// куда положить билд
+let paths = {
+  "js": `${prefixPath}js/`,
+  "css": `${prefixPath}css/`,
+  "img": `${prefixPath}img/`,
+  "fonts": `${prefixPath}fonts/`,
   "pages": "/",
-  "assets": "/assets/",
+  "assets": `${prefixPath}assets/`,
   get icon() {
     return `${this.img}svgSprite.svg#`;
   }
 }
 
-let paths = {
-  "js": "js/",
-  "css": "css/",
-  "img": "./img/",
-  "fonts": "fonts/",
+// пути в разметке и стилях
+let sources = {
+  "js": `${prefixSource}js/`,
+  "css": `${prefixSource}css/`,
+  "img": `${prefixSource}img/`,
+  "fonts": `${prefixSource}fonts/`,
   "pages": "/",
-  "assets": "./assets/",
+  "assets": `${prefixSource}assets/`,
   get icon() {
     return `${this.img}svgSprite.svg#`;
   }
 }
 
 let addAdditions = {
-  "src/img/**/*.*": sources.img,
-  "src/favicon/*.*": sources.img + '/favicon',
+  "src/img/**/*.*": paths.img,
+  "src/favicon/*.*": paths.img + '/favicon',
   // "node_modules/somePackage/images/*.{png,svg,jpg,jpeg}": "img/",
 };
 

@@ -1,6 +1,6 @@
 {
   "name": "project-builder",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Start kit for HTML/CSS/JS pages layout.",
   "author": "Alexander Motorygin",
   "license": "WTFPL",
@@ -30,7 +30,8 @@
   },
   "browserslist": [
     "> 1%",
-    "last 2 versions"
+    "last 2 versions",
+    "not dead"
   ],
   "devDependencies": {
     "@babel/core": "^7.6.2",
@@ -62,7 +63,7 @@
     "gulp-rename": "^2.0.0",
     "gulp-sass": "^5.1.0",
     "gulp-sourcemaps": "^3.0.0",
-    "gulp-svgmin": "^3.0.0",
+    "gulp-svgmin": "^4.1.0",
     "gulp-svgstore": "^7.0.1",
     "gulp-uglify-es": "^3.0.0",
     "husky": "^4.2.3",
@@ -84,6 +85,7 @@
     "stylelint-order": "^5.0.0",
     "stylelint-scss": "^4.3.0",
     "stylelint-selector-bem-pattern": "^2.1.0",
+    "terser-webpack-plugin": "^5.3.9",
     "through2": "^4.0.2",
     "webpack": "^5.21.1",
     "webpack-stream": "^7.0.0"

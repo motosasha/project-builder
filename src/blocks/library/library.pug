@@ -7,15 +7,15 @@ mixin library-item(data, mods)
   //-   data    {object} - объект
   //-   mods    {string} - список модификаторов
   //- Вызов:
-        +library-item(object, 'some-mod')
+        +library-item(object, "some-mod")
 
   -
     // список модификаторов
-    var allMods = '';
-    if(typeof(mods) !== 'undefined' && mods) {
-      var modsList = mods.split(',');
+    var allMods = "";
+    if(typeof(mods) !== "undefined" && mods) {
+      var modsList = mods.split(",");
       for (var i = 0; i < modsList.length; i++) {
-        allMods = allMods + ' library__item--' + modsList[i].trim();
+        allMods = allMods + " library__item--" + modsList[i].trim();
       }
     }
 

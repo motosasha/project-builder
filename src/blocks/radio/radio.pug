@@ -9,20 +9,20 @@ mixin radio(label, mods, name, id)
   //-   name       {string} - атрибут name
   //-   id         {string} - атрибут id
   //- Вызов:
-        +radio('Текст лейбла', 'some-mod', 'some-name', 'some-id')
+        +radio("Текст лейбла", "some-mod", "some-name", "some-id")
 
   -
     // список модификаторов
-    var allMods = '';
-    if(typeof(mods) !== 'undefined' && mods) {
-      var modsList = mods.split(',');
+    var allMods = "";
+    if(typeof(mods) !== "undefined" && mods) {
+      var modsList = mods.split(",");
       for (var i = 0; i < modsList.length; i++) {
-        allMods = allMods + ' radio--' + modsList[i].trim();
+        allMods = allMods + " radio--" + modsList[i].trim();
       }
     }
 
   label.radio(class= mods)
-    input.radio__input(id= id, type= 'radio', name= name)&attributes(attributes)
+    input.radio__input(id= id, type= "radio", name= name)&attributes(attributes)
     span.radio__fake-input
     if label
       span.radio__label!= label

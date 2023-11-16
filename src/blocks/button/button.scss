@@ -1,21 +1,18 @@
+@import "../../scss/mixins/button-reset";
 @import "../../scss/mixins/flexbox";
 @import "../../scss/mixins/text-styles";
 
 .button {
   $block-name: &; // #{$block-name}__element
 
-  @include flex-center;
   @include button-title;
+  @include flex-center;
 
   padding: 11px 20px;
   color: var(--front-invert);
   text-decoration: none;
-  background: none;
-  border: none;
   border-radius: 20px;
-  cursor: pointer;
   transition: background 0.25s ease, border 0.25s ease, color 0.25s ease;
-  appearance: none;
 
   &:focus {
     outline: 3px solid var(--brand-primary-light);
